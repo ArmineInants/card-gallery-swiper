@@ -35,6 +35,9 @@ export interface CardGallerySwiperProps {
 	imageUrls: Record<number, string>;
 	slidesPerView?: number;
 	pointsCount?: 3 | 4 | 5 | 6;
+	pointsType?: 'circle' | 'square';
+	pointSize?: number;
+	pointsGap?: number;
 	spaceBetween?: IBreakpoints;
 	breakpoints?: IBreakpoints;
 	containerMaxWidths?: IBreakpoints;
@@ -65,6 +68,9 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		desktop: 24,
 	},
 	pointsCount = 5,
+	pointsType = 'circle',
+	pointSize = 10,
+	pointsGap = 10,
 	imageUrls,
 	className,
 	breakpoints = {
@@ -108,13 +114,15 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentActivePoint, setCurrentActivePoint] = useState(1);
 	const [currentImage, setCurrentImage] = useState(1);
+	const [viewportWidth, setViewportWidth] = useState(
+		typeof window !== 'undefined' ? window.innerWidth : breakpoints.desktop
+	);
 	const sliderElement = useRef<HTMLDivElement>(null);
 	const sliderContentWrapper = useRef<HTMLDivElement>(null);
 	const sliderNavElement = useRef<HTMLDivElement>(null);
 	const scrollRafRef = useRef<number | null>(null);
-	const [viewportWidth, setViewportWidth] = useState(
-		typeof window !== 'undefined' ? window.innerWidth : breakpoints.desktop
-	);
+
+	const delta = pointSize + pointsGap;
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
@@ -166,9 +174,9 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
 		if (!translate) {
 			if (currentActivePoint < totalSlides) {
-				bar.style.transform = `translateX(${-32 * (currentActivePoint - (pointsCount - 1))}px)`;
+				bar.style.transform = `translateX(${-delta * (currentActivePoint - (pointsCount - 1))}px)`;
 			} else {
-				bar.style.transform = `translateX(${-32 * (currentActivePoint - pointsCount)}px)`;
+				bar.style.transform = `translateX(${-delta * (currentActivePoint - pointsCount)}px)`;
 			}
 		}
 	}
@@ -195,20 +203,20 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		const bar = sliderNavElement.current;
 		if (currentActivePoint > activePoint && activePoint > 1 && bar && activePoint < totalSlides - 1) {
 			const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
-			const delta = currentActivePoint - activePoint;
-			if ((activePoint * 32 + translate) / 32 <= 1) {
-				bar.style.transform = `translateX(${32 * (delta) + translate}px)`;
+			const direction = currentActivePoint - activePoint;
+			if ((activePoint * delta + translate) / delta <= 1) {
+				bar.style.transform = `translateX(${delta * (direction) + translate}px)`;
 			}
 		}
 		if (currentActivePoint <= activePoint && activePoint < totalSlides && bar && activePoint > pointsCount - 2) {
 			const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
-			const delta = activePoint - currentActivePoint;
-			if ((activePoint * 32 + translate) / 32 > pointsCount - 1) {
-				bar.style.transform = `translateX(${-32 * (delta) + translate}px)`;
+			const direction = activePoint - currentActivePoint;
+			if ((activePoint * delta + translate) / delta > pointsCount - 1) {
+				bar.style.transform = `translateX(${-delta * (direction) + translate}px)`;
 			}
 		}
 		if (bar && activePoint === totalSlides) {
-			bar.style.transform = `translateX(${-32 * (totalSlides - pointsCount)}px)`;
+			bar.style.transform = `translateX(${-delta * (totalSlides - pointsCount)}px)`;
 		}
 		if (bar && activePoint === 1) {
 			bar.style.transform = `translateX(${0}px)`;
@@ -271,9 +279,9 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 						<NavigationButton $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
 							<ArrowRightIcon color={arrowColor} />
 						</NavigationButton>
-						<ProgressBarVisible $pointsCount={pointsCount}>
+						<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
 							<ProgressBar
-								style={{ width: `${32 * totalSlides + (22 * pointsCount) / totalSlides}px` }}
+								style={{ width: `${delta * totalSlides + ((pointSize + pointsGap/2) * pointsCount) / totalSlides}px` }}
 								ref={sliderNavElement}
 							>
 								{Array.from({ length: totalSlides }, (_, idx) => idx + 1).map((i) => (
@@ -281,6 +289,9 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 										key={i}
 										$active={currentActivePoint === i}
 										$pointColor={pointColor}
+										$pointsType={pointsType}
+										$pointSize={pointSize}
+										$pointsGap={pointsGap}
 									/>
 								))}
 							</ProgressBar>
@@ -316,6 +327,10 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					modalOverlayTransitionDuration={modalOverlayTransitionDuration}
 					cardBorderWidth={cardBorderWidth}
 					cardBorderColor={cardBorderColor}
+					delta={delta}
+					pointsGap={pointsGap}
+					pointSize={pointSize}
+					pointsType={pointsType}
 				/>
 			</ModalContainer>
 		</>

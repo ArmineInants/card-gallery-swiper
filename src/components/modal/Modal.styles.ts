@@ -99,7 +99,7 @@ export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssM
         }
     }
 
-    @media (max-width: ${({ $cssMax }) => $cssMax.TABLET_MAX}px) {
+    @media (max-width: ${({ $cssMax }) => $cssMax.MOBILE_MAX}px) {
         right: 14px;
         top: 16px;
     }
@@ -121,7 +121,7 @@ export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssM
             fill: #fff;
         }
 
-        @media (max-width: ${$cssMax.TABLET_MAX}px) {
+        @media (max-width: ${$cssMax.MOBILE_MAX}px) {
             right: 0;
             top: -50px;
         }

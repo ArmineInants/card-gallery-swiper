@@ -28,6 +28,10 @@ interface IModalGallery {
 	modalOverlayTransitionDuration: number;
 	cardBorderWidth: number;
 	cardBorderColor: string;
+	delta: number;
+	pointsGap: number;
+	pointSize: number;
+	pointsType: 'circle' | 'square';
 }
 
 export const ModalGallery: React.FC<IModalGallery> = ({
@@ -50,6 +54,10 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	modalOverlayTransitionDuration,
 	cardBorderWidth,
 	cardBorderColor,
+	delta,
+	pointsGap,
+	pointSize,
+	pointsType,
 }) => {
 	const imageRef = useRef<HTMLDivElement>(null);
 	const barRef = useRef<HTMLDivElement | null>(null);
@@ -66,9 +74,9 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 		const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
 		if (!translate) {
 			if (currentImage < totalImages) {
-				bar.style.transform = `translateX(${-32 * (currentImage - (pointsCount - 1))}px)`;
+				bar.style.transform = `translateX(${-delta * (currentImage - (pointsCount - 1))}px)`;
 			} else {
-				bar.style.transform = `translateX(${-32 * (currentImage - pointsCount)}px)`;
+				bar.style.transform = `translateX(${-delta * (currentImage - pointsCount)}px)`;
 			}
 		}
 	}, [isOpenedGalleryModal, currentImage, pointsCount, totalImages]);
@@ -83,16 +91,16 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			if (bar && currentImage < totalImages - (pointsCount - 3) && currentImage > 2) {
 				const translate: number =
 					Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
-				if ((currentImage * 32 + translate) / 32 <= 2) {
-					bar.style.transform = `translateX(${32 + translate}px)`;
+				if ((currentImage * delta + translate) / delta <= 2) {
+					bar.style.transform = `translateX(${delta + translate}px)`;
 				}
 			}
 		} else if (side === 'right' && currentImage !== totalImages) {
 			if (bar && currentImage > pointsCount - 2 && currentImage < totalImages - 1) {
 				const translate: number =
 					Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
-				if ((currentImage * 32 + translate) / 32 > pointsCount - 2) {
-					bar.style.transform = `translateX(${-32 + translate}px)`;
+				if ((currentImage * delta + translate) / delta > pointsCount - 2) {
+					bar.style.transform = `translateX(${-delta + translate}px)`;
 				}
 			}
 		}
@@ -147,9 +155,9 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 				>
 					<ArrowRightIcon color={arrowColor} />
 				</NavigationButton>
-				<ProgressBarVisible $pointsCount={pointsCount} id="scrollable-wrap">
+				<ProgressBarVisible $pointsCount={pointsCount} $delta={delta} id="scrollable-wrap" >
 					<ProgressBar
-						style={{ width: `${32 * totalImages}px` }}
+						style={{ width: `${delta * totalImages}px` }}
 						id="scrollable-bar"
 						ref={barRef}
 					>
@@ -158,6 +166,9 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 								key={i}
 								$active={currentImage === i + 1}
 								$pointColor={pointColor}
+								$pointsType={pointsType}
+								$pointSize={pointSize}
+								$pointsGap={pointsGap}
 							/>
 						))}
 					</ProgressBar>

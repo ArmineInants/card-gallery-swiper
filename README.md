@@ -52,35 +52,50 @@ Clicking a card opens the **modal gallery**; use the arrows or dots to navigate.
 
 All props are optional unless stated otherwise.
 
-- **`imageUrls`** (required)  
-  `Record<number, string>` — map from index (starting at 1) to image URL.
+#### Core
 
-- **Layout / responsiveness**
-  - `slidesPerView?: number` – cards visible at once (defaults to computed value from container width + card width).
-  - `pointsCount?: 3 | 4 | 5 | 6` – number of progress dots (default `5`).
-  - `spaceBetween?: IBreakpoints` – gap between cards per breakpoint.
-  - `breakpoints?: IBreakpoints` – pixel widths for `mobile`, `tablet`, `laptop`, `desktop`.
-  - `containerMaxWidths?: IBreakpoints` – max container widths per breakpoint.
-  - `cardWidths?: IBreakpoints` – card width per breakpoint.
-  - `cardHeights?: IBreakpoints` – card height per breakpoint.
+| Prop          | Type                         | Default | Description |
+|--------------|------------------------------|---------|-------------|
+| `imageUrls`* | `Record<number, string>`     | –       | Map from index (starting at 1) to image URL. **Required.** |
 
-- **Styling**
-  - `className?: string` – wrapper class.
-  - `cardClassName?: string` – class applied to each card.
-  - `cardBorderWidth?: number` – card border width (default `2`).
-  - `cardBorderColor?: string` – card border color (default `#251f97`).
-  - `arrowColor?: string` – color for navigation arrows (default `#ffffff`).
-  - `arrowHoverColor?: string` – arrow color on hover (default `#56CCF2`).
-  - `pointColor?: string` – active progress dot color (default `#56CCF2`).
+#### Layout / responsiveness
 
-- **Modal overlay**
-  - `modalBackgroundColor?: string` – modal content background (default `'transparent'`).
-  - `modalOverlayColor?: string` – overlay background color (default `'rgba(34, 27, 88, 0.92)'`).
-  - `modalOverlayOpacity?: number` – overlay opacity when open (default `1`).
-  - `modalOverlayBlur?: number` – overlay blur in pixels (default `0`).
-  - `modalOverlayShadow?: string` – box-shadow for modal content (default `'0px 0px 10px 0px rgba(0, 0, 0, 0.1)'`).
-  - `modalOverlayTransition?: string` – CSS transition for overlay (default `'all 0.3s ease-in-out'`).
-  - `modalOverlayTransitionDuration?: number` – transition duration in ms (default `300`).
+| Prop                | Type              | Default                              | Description |
+|---------------------|-------------------|--------------------------------------|-------------|
+| `slidesPerView`     | `number`          | computed from container + card size | Cards visible at once. |
+| `pointsCount`       | `3 \| 4 \| 5 \| 6`| `5`                                  | Number of progress dots. |
+| `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
+| `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
+| `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). |
+| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 400, laptop: 400, desktop: 300 }` | Card width per breakpoint (px). |
+| `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 400, laptop: 400, desktop: 300 }` | Card height per breakpoint (px). |
+
+#### Styling
+
+| Prop            | Type                      | Default      | Description |
+|-----------------|---------------------------|--------------|-------------|
+| `className`     | `string`                  | –            | Class applied to the outer wrapper. |
+| `cardClassName` | `string`                  | –            | Class applied to each card. |
+| `cardBorderWidth` | `number`               | `2`          | Card border width (px). |
+| `cardBorderColor` | `string`               | `#251f97`    | Card border color. |
+| `arrowColor`    | `string`                  | `#ffffff`    | Color for navigation arrows. |
+| `arrowHoverColor` | `string`               | `#56CCF2`    | Arrow color on hover. |
+| `pointColor`    | `string`                  | `#56CCF2`    | Active progress dot color. |
+| `pointsType`    | `'circle' \| 'square'`    | `'circle'`   | Shape of progress dots. |
+| `pointSize`     | `number`                  | `10`         | Progress dot size (width/height, px). |
+| `pointsGap`     | `number`                  | `10`         | Horizontal gap between dots (px). |
+
+#### Modal overlay
+
+| Prop                        | Type     | Default                               | Description |
+|-----------------------------|----------|---------------------------------------|-------------|
+| `modalBackgroundColor`      | `string` | `'transparent'`                       | Modal content background. |
+| `modalOverlayColor`         | `string` | `'rgba(34, 27, 88, 0.92)'`           | Overlay background color. |
+| `modalOverlayOpacity`       | `number` | `1`                                   | Overlay opacity when open. |
+| `modalOverlayBlur`          | `number` | `0`                                   | Overlay blur in pixels. |
+| `modalOverlayShadow`        | `string` | `'0px 0px 10px 0px rgba(0, 0, 0, 0.1)'` | Box-shadow for modal content. |
+| `modalOverlayTransition`    | `string` | `'all 0.3s ease-in-out'`             | CSS transition for overlay. |
+| `modalOverlayTransitionDuration` | `number` | `300`                           | Transition duration in ms. |
 
 `IBreakpoints` is:
 

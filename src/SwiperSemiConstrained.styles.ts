@@ -127,8 +127,8 @@ export const NavigationButton = styled.button<{ $active?: boolean; $left?: boole
   ${({ $left }) => $left && `transform: rotate(180deg);`};
 `;
 
-export const ProgressBarVisible = styled.div<{ $pointsCount: number }>`
-  width: ${({ $pointsCount }) => $pointsCount * 32 + 6}px;
+export const ProgressBarVisible = styled.div<{ $pointsCount: number, $delta: number }>`
+  width: ${({ $pointsCount, $delta }) => $pointsCount * $delta + 6}px;
   height: 100%;
   overflow: hidden;
   transition: all 0.5s;
@@ -143,16 +143,17 @@ export const ProgressBar = styled.div`
   transition: transform 0.5s;
 `;
 
-export const ProgressPoint = styled.div<{ $active?: boolean; $pointColor?: string }>`
-  width: ${({ $active }) => ($active ? 18 : 12)}px;
-  height: ${({ $active }) => ($active ? 18 : 12)}px;
+export const ProgressPoint = styled.div<{ $active: boolean; $pointColor: string; $pointsType: 'circle' | 'square'; $pointSize: number; $pointsGap: number }>`
+  width: ${({ $active, $pointSize }) => ($active ? $pointSize + 6 : $pointSize)}px;
+  height: ${({ $active, $pointSize }) => ($active ? $pointSize + 6 : $pointSize)}px;
   max-width: 18px;
   max-height: 18px;
   transform: rotate(45deg);
+  border-radius: ${({ $pointsType }) => $pointsType === 'square' ? 0 : '50%'};
   background-color: ${({ $pointColor }) =>
     $pointColor};
   opacity: ${({ $active }) => ($active ? 1 : 0.5)};
-  margin: 0 10px;
+  margin: 0 ${({ $pointsGap }) => $pointsGap / 2}px;
   transition: background-color 0.2s ease-in, width 0.2s ease-in, height 0.2s ease-in;
 `;
 

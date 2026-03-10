@@ -23,7 +23,7 @@ export const App: React.FC = () => {
 	};
 	return (
 		<div className="app">
-			<h1>Swiper Semi Constrained Demo</h1>
+			<h1>Card Gallery Swiper Demo</h1>
 			<p>Scroll horizontally or use the navigation controls to move between cards.</p>
 			<SwiperSemiConstrained
 				imageUrls={imageUrls}
