@@ -50,7 +50,6 @@ export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMa
 
   > div {
     transition: transform 0.2s ease-in;
-    cursor: pointer;
 
     &:last-child {
       margin-right: calc((100vw - ${({ $containerMaxWidths }) => $containerMaxWidths.desktop }px) / 2);

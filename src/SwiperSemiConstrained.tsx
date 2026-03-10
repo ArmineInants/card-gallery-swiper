@@ -33,7 +33,7 @@ export interface IBreakpoints {
 
 export interface CardGallerySwiperProps {
 	imageUrls: Record<number, string>;
-	slidesPerView?: number;
+	withModal?: boolean;
 	pointsCount?: 3 | 4 | 5 | 6;
 	pointsType?: 'circle' | 'square';
 	pointSize?: number;
@@ -60,7 +60,7 @@ export interface CardGallerySwiperProps {
 }
 
 export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
-	slidesPerView,
+	withModal = true,
 	spaceBetween = {
 		mobile: 12,
 		tablet: 24,
@@ -147,11 +147,12 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const cardWidth = cardWidths[device as keyof typeof cardWidths];
 	const cardHeight = cardHeights[device as keyof typeof cardHeights];
 	const cardCount = Object.keys(imageUrls).length;
-	const slidesPerViewValue = slidesPerView || Math.floor(containerMaxWidth / cardWidth);
-	const totalSlides = Math.ceil(cardCount / slidesPerViewValue);
+	const slidesPerView = Math.floor(containerMaxWidth / cardWidth);
+	const totalSlides = Math.ceil(cardCount / slidesPerView);
 	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween];
 
 	const onClickImage = (id: number) => {
+		if (!withModal) return;
 		setCurrentImage(id);
 		setIsModalOpen(true);
 	}
@@ -159,7 +160,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const onSlide = (side: 'left' | 'right') => {
 		if (!(sliderElement?.current && sliderContentWrapper?.current)) return;
 		const wrapperWidth = sliderContentWrapper.current.getBoundingClientRect().width;
-		const scrollWidth = (wrapperWidth + spaceBetweenValue) * slidesPerViewValue;
+		const scrollWidth = (wrapperWidth + spaceBetweenValue) * slidesPerView;
 		const newScroll = side === 'right' ? (currentActivePoint - 1) * scrollWidth + scrollWidth : (currentActivePoint - 1) * scrollWidth - scrollWidth;
 
 		sliderElement.current.scrollTo({
@@ -185,7 +186,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		if (!sliderElement?.current || !sliderContentWrapper.current) return;
 		const wrapperWidth = sliderContentWrapper.current.getBoundingClientRect().width;
 		const scrollLeft = sliderElement.current.scrollLeft;
-		const scrollableWidth = (wrapperWidth + spaceBetweenValue) * slidesPerViewValue;
+		const scrollableWidth = (wrapperWidth + spaceBetweenValue) * slidesPerView;
 		const percent = (scrollLeft / scrollableWidth) / 100;
 		const pointPercent = 100 * percent;
 		let activePoint = (Math.round(pointPercent) + 1) || 1;
@@ -225,7 +226,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		scrollRafRef.current = null;
 	}, [
 		spaceBetweenValue,
-		slidesPerViewValue,
+		slidesPerView,
 		cardWidth,
 		cardCount,
 		containerMaxWidth,
@@ -268,6 +269,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 										className={cardClassName}
 										borderWidth={cardBorderWidth}
 										borderColor={cardBorderColor}
+										clickable={withModal}
 									/>
 								))}
 							</SliderConstraintInner>
@@ -307,7 +309,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					</NavigationWrapper>
 				</ConstrainedBox>
 			</Section>
-			<ModalContainer style={{ display: isModalOpen ? 'block' : 'none' }}>
+			{withModal && (
+				<ModalContainer style={{ display: isModalOpen ? 'block' : 'none' }}>
 				<ModalGallery
 					isOpenedGalleryModal={isModalOpen}
 					closeGalleryModal={() => setIsModalOpen(false)}
@@ -333,7 +336,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					pointSize={pointSize}
 					pointsType={pointsType}
 				/>
-			</ModalContainer>
+				</ModalContainer>
+			)}
 		</>
 	);
 };

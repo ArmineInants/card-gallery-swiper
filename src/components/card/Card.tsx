@@ -13,6 +13,7 @@ interface CardProps {
 	onClickImage: (id: number) => void;
 	borderWidth?: number;
 	borderColor?: string;
+	clickable: boolean;
 }
 
 // TODO: LazyLoad по горизонту не работает. Попробовать поиграться с пропом scrollContainer.
@@ -24,6 +25,7 @@ export const Card: React.FC<CardProps> = ({
 	cssMax,
 	borderWidth,
 	borderColor,
+	clickable,
 }) => {
 	return (
 		<CardStyle
@@ -31,6 +33,7 @@ export const Card: React.FC<CardProps> = ({
 			className={className}
 			$borderWidth={borderWidth}
 			$borderColor={borderColor}
+			$clickable={clickable}
 			onClick={() => onClickImage(id)}
 		>
 			<CardImageSlot>

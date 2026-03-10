@@ -1,6 +1,6 @@
 {
   "name": "card-gallery-swiper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A React card gallery swiper with constrained layout and modal image viewer.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -46,11 +46,23 @@
   },
   "keywords": [
     "react",
-    "swiper",
-    "carousel",
-    "gallery",
-    "cards",
-    "styled-components"
+    "react-component",
+    "react-gallery",
+    "react-image-gallery",
+    "react-carousel",
+    "react-swiper",
+    "react-slider",
+    "image-gallery",
+    "image-carousel",
+    "image-slider",
+    "photo-gallery",
+    "card-gallery",
+    "gallery-swiper",
+    "gallery-carousel",
+    "modal-gallery",
+    "react-modal-gallery",
+    "horizontal-scroll",
+    "react-horizontal-scroll"
   ],
   "repository": {
     "type": "git",

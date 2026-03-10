@@ -5,6 +5,7 @@ export const CardStyle = styled.div<{
   $cssMax: ICssMax;
   $borderWidth?: number;
   $borderColor?: string;
+  $clickable: boolean;
 }>`
   display: inline;
   position: relative;
@@ -13,7 +14,7 @@ export const CardStyle = styled.div<{
     `${$borderWidth}px solid ${$borderColor}`};
   height: 100%;
   transition: transform 0.2s ease-in;
-  cursor: pointer;
+  cursor: ${({ $clickable }) => $clickable ? 'pointer' : 'default'};
 
   &:hover {
     transform: scale(1.05);

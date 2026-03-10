@@ -27,7 +27,7 @@ export const App: React.FC = () => {
 	return (
 		<main className="app">
 			<ConstrainedBox containerMaxWidth={containerMaxWidth}>
-				<div style={{ width: '100%', border: '1px solid white', paddingBottom: '24px'}}>
+				<div style={{ width: '100%', border: '1px solid white', paddingBottom: '24px', paddingTop: '24px'}}>
 					<h1>Card Gallery Swiper Demo</h1>
 					<p>Scroll horizontally or use the navigation controls to move between cards.</p>
 					<p>You may click on the cards to open the modal gallery.</p>

@@ -1,6 +1,6 @@
 ## Card Gallery Swiper
 
-A reusable **React card swiper** with a constrained layout and an optional **modal image gallery**.
+A React **card gallery swiper** with container-aligned layout, edge-to-edge scrolling and an optional **modal image gallery**.
 
 Built with **TypeScript** and **styled-components**, designed to be dropped into any React app.
 
@@ -14,6 +14,21 @@ Built with **TypeScript** and **styled-components**, designed to be dropped into
   <img src="./docs/Card-Gallery-Screenshot-1.jpg" alt="Card Gallery Swiper screenshot 1" width="40%" style="margin-right: 10px;" />
   <img src="./docs/Card-Gallery-Screenshot-2.jpg" alt="Card Gallery Swiper screenshot 2" width="40%" />
 </p>
+
+### Features
+
+- **Container-aligned layout** – the gallery starts aligned with the page container while extending to the full right edge of the screen.
+- **Edge-to-edge scrolling** – when scrolling, the gallery reaches the left edge of the viewport.
+- **Built-in modal gallery** – click a card to open a focused image viewer with arrow navigation.
+- **Customizable navigation** – configure arrow colors and progress indicators (shape, size, spacing, count).
+- **Fully responsive** – breakpoints, card sizes, and spacing are all configurable via typed props.
+- **Framework-agnostic** – works with Vite, CRA, Next.js, Remix, etc. (no framework-specific dependencies).
+
+### Layout Behavior
+
+The gallery is aligned with the page container on the left side while extending to the full width of the screen on the right.
+
+When scrolling through items, the gallery smoothly reaches the left edge of the viewport, creating a modern edge-to-edge browsing experience commonly used in product and media galleries.
 
 ### Installation
 
@@ -57,6 +72,33 @@ Clicking a card opens the **modal gallery**; use the arrows or dots to navigate.
 
 ---
 
+### Advanced usage
+
+Customize navigation styling and layout:
+
+```tsx
+<CardGallerySwiper
+  imageUrls={images}
+  pointsCount={6}
+  pointsType="square"
+  pointSize={12}
+  pointsGap={6}
+  arrowColor="#56CCF2"
+  arrowHoverColor="#9AE6FF"
+  cardBorderWidth={3}
+  cardBorderColor="#56CCF2"
+  modalOverlayBlur={6}
+  modalOverlayOpacity={0.9}
+/>
+```
+
+This example:
+- Uses 6 square progress indicators, slightly larger and closer together.
+- Applies a custom accent color to card borders and navigation arrows.
+- Adds a subtle blur and semi-transparent overlay behind the modal gallery.
+
+---
+
 ### Props
 
 All props are optional unless stated otherwise.
@@ -71,7 +113,6 @@ All props are optional unless stated otherwise.
 
 | Prop                | Type              | Default                              | Description |
 |---------------------|-------------------|--------------------------------------|-------------|
-| `slidesPerView`     | `number`          | computed from container + card size | Cards visible at once. |
 | `pointsCount`       | `3 \| 4 \| 5 \| 6`| `5`                                  | Number of progress dots. |
 | `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
 | `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
