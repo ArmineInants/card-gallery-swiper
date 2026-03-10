@@ -27,6 +27,8 @@ interface IModalProps {
 	modalOverlayShadow: string;
 	modalOverlayTransition: string;
 	modalOverlayTransitionDuration: number;
+	arrowColor: string;
+	arrowHoverColor: string;
 	children?: React.ReactNode;
 }
 
@@ -35,7 +37,6 @@ export const Modal: React.FC<IModalProps> = ({
 	isOpened,
 	onCancel,
 	children,
-	maxWidth = '430px',
 	frameless = false,
 	className,
 	cssMax,
@@ -46,6 +47,8 @@ export const Modal: React.FC<IModalProps> = ({
 	modalOverlayShadow,
 	modalOverlayTransition,
 	modalOverlayTransitionDuration,
+	arrowColor,
+	arrowHoverColor,
 }) => {
 	const modalWrapperRef = useRef<HTMLDivElement | null>(null);
 	const modalContentRef = createRef<HTMLDivElement>();
@@ -90,7 +93,7 @@ export const Modal: React.FC<IModalProps> = ({
 					$transition={modalOverlayTransition}
 					$transitionDuration={modalOverlayTransitionDuration}
 				>
-					<ModalHeaderExit onClick={onCancel} $frameless={frameless} $cssMax={cssMax}>
+					<ModalHeaderExit onClick={onCancel} $frameless={frameless} $cssMax={cssMax} $arrowColor={arrowColor} $arrowHoverColor={arrowHoverColor}>
 						<ExitIcon />
 					</ModalHeaderExit>
 

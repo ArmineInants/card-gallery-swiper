@@ -74,7 +74,7 @@ export const ModalBox = styled.div<{
     }
 `;
 
-export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssMax }>`
+export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssMax; $arrowColor: string; $arrowHoverColor: string; }>`
     position: absolute;
     right: 36px;
     top: 39px;
@@ -92,10 +92,13 @@ export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssM
         height: 24px;
         transition: fill 0.2s;
     }
+    svg path {
+        fill: ${({ $arrowColor }) => $arrowColor};
+    }
 
     &:hover {
-        svg {
-            opacity: 0.7;
+        svg path {
+            fill: ${({ $arrowHoverColor }) => $arrowHoverColor};
         }
     }
 
@@ -116,9 +119,6 @@ export const ModalHeaderExit = styled.div<{ $frameless?: boolean; $cssMax: ICssM
         svg {
             width: 20px;
             height: 20px;
-        }
-        svg path {
-            fill: #fff;
         }
 
         @media (max-width: ${$cssMax.MOBILE_MAX}px) {

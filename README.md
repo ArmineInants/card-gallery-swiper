@@ -10,6 +10,11 @@ Built with **TypeScript** and **styled-components**, designed to be dropped into
 
 **Live demo:** [View demo](https://card-gallery-swiper.vercel.app/)
 
+<p align="center">
+  <img src="./docs/Card-Gallery-Screenshot-1.jpg" alt="Card Gallery Swiper screenshot 1" width="40%" style="margin-right: 10px;" />
+  <img src="./docs/Card-Gallery-Screenshot-2.jpg" alt="Card Gallery Swiper screenshot 2" width="40%" />
+</p>
+
 ### Installation
 
 ```bash
@@ -71,8 +76,8 @@ All props are optional unless stated otherwise.
 | `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
 | `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
 | `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). |
-| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 400, laptop: 400, desktop: 300 }` | Card width per breakpoint (px). |
-| `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 400, laptop: 400, desktop: 300 }` | Card height per breakpoint (px). |
+| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card width per breakpoint (px). |
+| `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card height per breakpoint (px). |
 
 #### Styling
 

@@ -87,15 +87,15 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	},
 	cardWidths = {
 		mobile: 288,
-		tablet: 400,
-		laptop: 400,
-		desktop: 300,
+		tablet: 300,
+		laptop: 300,
+		desktop: 400,
 	},
 	cardHeights = {
 		mobile: 288,
-		tablet: 400,
-		laptop: 400,
-		desktop: 300,
+		tablet: 300,
+		laptop: 300,
+		desktop: 400,
 	},
 	arrowColor = '#ffffff',
 	pointColor = '#56CCF2',
@@ -276,7 +276,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				</NovatarList>
 				<ConstrainedBox containerMaxWidth={containerMaxWidth}>
 					<NavigationWrapper>
-						<NavigationButton $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
+						<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
 							<ArrowRightIcon color={arrowColor} />
 						</NavigationButton>
 						<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
@@ -297,6 +297,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 							</ProgressBar>
 						</ProgressBarVisible>
 						<NavigationButton
+							aria-label="Next slides"
 							$active={currentActivePoint < totalSlides}
 							$hoverColor={arrowHoverColor}
 							onClick={() => currentActivePoint < totalSlides && onSlide('right')}

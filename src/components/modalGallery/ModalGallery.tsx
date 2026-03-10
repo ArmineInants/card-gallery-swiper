@@ -5,6 +5,7 @@ import {
 	ModalBox,
 	ImageWrapper,
 } from './ModalGalery.styles';
+import Image from '../Image/Image';
 
 import { NavigationWrapper, NavigationButton, ProgressBarVisible, ProgressBar, ProgressPoint} from '../../SwiperSemiConstrained.styles';
 
@@ -123,6 +124,8 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			modalOverlayShadow={modalOverlayShadow}
 			modalOverlayTransition={modalOverlayTransition}
 			modalOverlayTransitionDuration={modalOverlayTransitionDuration}
+			arrowColor={arrowColor}
+			arrowHoverColor={arrowHoverColor}
 			header={{
 				type: 'custom',
 				content: <></>,
@@ -140,14 +143,17 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			frameless
 		>
 			<ImageWrapper $cssMax={cssMax} ref={imageRef} id="image-gallery" $cardBorderWidth={cardBorderWidth} $cardBorderColor={cardBorderColor}>
-				<img
-					src={(imagesList as any)[currentImage] as string}
+				<Image
+					shimmerColor={cardBorderColor}
+					url={(imagesList as any)[currentImage] as string}
 					alt="novatar"
-					onLoad={setWidth}
+					loading="eager"
+					withShimmer
 				/>
 			</ImageWrapper>
 			<NavigationWrapper>
 				<NavigationButton
+					aria-label="Previous slides"
 					$active={currentImage > 1}
 					$left={true}
 					$hoverColor={arrowHoverColor}
@@ -174,6 +180,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 					</ProgressBar>
 				</ProgressBarVisible>
 				<NavigationButton
+					aria-label="Next slides"
 					$active={currentImage < totalImages}
 					$hoverColor={arrowHoverColor}
 					onClick={() => slide('right')}

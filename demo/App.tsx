@@ -25,20 +25,19 @@ export const App: React.FC = () => {
 	const innerWidth = window.innerWidth;
 	const containerMaxWidth = innerWidth < 360 ? 320 : innerWidth < 768 ? 360 : innerWidth < 1280 ? 688 : innerWidth < 1440 ? 1040 : 1128;
 	return (
-		<div className="app">
+		<main className="app">
 			<ConstrainedBox containerMaxWidth={containerMaxWidth}>
 				<div style={{ width: '100%', border: '1px solid white', paddingBottom: '24px'}}>
 					<h1>Card Gallery Swiper Demo</h1>
 					<p>Scroll horizontally or use the navigation controls to move between cards.</p>
 					<p>You may click on the cards to open the modal gallery.</p>
 					<p>The gallery is constrained to the container width from left and goes to the right.</p>
-
 				</div>
 			</ConstrainedBox>
 			<SwiperSemiConstrained
 				imageUrls={imageUrls}
 			/>
-		</div>
+		</main>
 	);
 };
 
