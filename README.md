@@ -6,6 +6,10 @@ Built with **TypeScript** and **styled-components**, designed to be dropped into
 
 ---
 
+### Demo
+
+**Live demo:** [View demo](https://card-gallery-swiper.vercel.app/)
+
 ### Installation
 
 ```bash
