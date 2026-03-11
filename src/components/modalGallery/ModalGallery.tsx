@@ -146,48 +146,50 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 				<Image
 					shimmerColor={cardBorderColor}
 					url={(imagesList as any)[currentImage] as string}
-					alt="novatar"
+					alt="image"
 					loading="eager"
 					withShimmer
 				/>
 			</ImageWrapper>
-			<NavigationWrapper>
-				<NavigationButton
-					aria-label="Previous slides"
-					$active={currentImage > 1}
-					$left={true}
-					$hoverColor={arrowHoverColor}
-					onClick={() => slide('left')}
-				>
-					<ArrowRightIcon color={arrowColor} />
-				</NavigationButton>
-				<ProgressBarVisible $pointsCount={pointsCount} $delta={delta} id="scrollable-wrap" >
-					<ProgressBar
-						style={{ width: `${delta * totalImages}px` }}
-						id="scrollable-bar"
-						ref={barRef}
+			{pointsCount > 1 && (
+				<NavigationWrapper>
+					<NavigationButton
+						aria-label="Previous slides"
+						$active={currentImage > 1}
+						$left={true}
+						$hoverColor={arrowHoverColor}
+						onClick={() => slide('left')}
 					>
-						{Array.from({ length: totalImages }, (_, i) => i).map((i) => (
-							<ProgressPoint
-								key={i}
-								$active={currentImage === i + 1}
-								$pointColor={pointColor}
-								$pointsType={pointsType}
-								$pointSize={pointSize}
-								$pointsGap={pointsGap}
-							/>
-						))}
-					</ProgressBar>
-				</ProgressBarVisible>
-				<NavigationButton
-					aria-label="Next slides"
-					$active={currentImage < totalImages}
-					$hoverColor={arrowHoverColor}
-					onClick={() => slide('right')}
-				>
-					<ArrowRightIcon color={arrowColor} />
-				</NavigationButton>
-			</NavigationWrapper>
+						<ArrowRightIcon color={arrowColor} />
+					</NavigationButton>
+					<ProgressBarVisible $pointsCount={pointsCount} $delta={delta} id="scrollable-wrap" >
+						<ProgressBar
+							style={{ width: `${delta * totalImages + 6}px` }}
+							id="scrollable-bar"
+							ref={barRef}
+						>
+							{Array.from({ length: totalImages }, (_, i) => i).map((i) => (
+								<ProgressPoint
+									key={i}
+									$active={currentImage === i + 1}
+									$pointColor={pointColor}
+									$pointsType={pointsType}
+									$pointSize={pointSize}
+									$pointsGap={pointsGap}
+								/>
+							))}
+						</ProgressBar>
+					</ProgressBarVisible>
+					<NavigationButton
+						aria-label="Next slides"
+						$active={currentImage < totalImages}
+						$hoverColor={arrowHoverColor}
+						onClick={() => slide('right')}
+					>
+						<ArrowRightIcon color={arrowColor} />
+					</NavigationButton>
+				</NavigationWrapper>
+			)}
 		</ModalBox>
 	);
 };

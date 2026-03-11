@@ -79,7 +79,7 @@ Customize navigation styling and layout:
 ```tsx
 <CardGallerySwiper
   imageUrls={images}
-  pointsCount={6}
+  pointsCountDefault={6}
   pointsType="square"
   pointSize={12}
   pointsGap={6}
@@ -108,12 +108,13 @@ All props are optional unless stated otherwise.
 | Prop          | Type                         | Default | Description |
 |--------------|------------------------------|---------|-------------|
 | `imageUrls`* | `Record<number, string>`     | –       | Map from index (starting at 1) to image URL. **Required.** |
+| `withModal`  | `boolean`                    | `true`  | Whether clicking a card opens the modal gallery. |
 
 #### Layout / responsiveness
 
 | Prop                | Type              | Default                              | Description |
 |---------------------|-------------------|--------------------------------------|-------------|
-| `pointsCount`       | `3 \| 4 \| 5 \| 6`| `5`                                  | Number of progress dots. |
+| `pointsCountDefault`   | `3 \| 4 \| 5 \| 6`| `5`                               | Number of progress dots. |
 | `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
 | `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
 | `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). |
@@ -128,9 +129,9 @@ All props are optional unless stated otherwise.
 | `cardClassName` | `string`                  | –            | Class applied to each card. |
 | `cardBorderWidth` | `number`               | `2`          | Card border width (px). |
 | `cardBorderColor` | `string`               | `#251f97`    | Card border color. |
-| `arrowColor`    | `string`                  | `#ffffff`    | Color for navigation arrows. |
-| `arrowHoverColor` | `string`               | `#56CCF2`    | Arrow color on hover. |
-| `pointColor`    | `string`                  | `#56CCF2`    | Active progress dot color. |
+| `arrowColor`    | `string`                  | `#2D2926`    | Color for navigation arrows in the swiper. |
+| `arrowHoverColor` | `string`               | `#8C7355`    | Arrow color on hover in the swiper. |
+| `pointColor`    | `string`                  | `#D1CDC7`    | Active progress dot color in the swiper. |
 | `pointsType`    | `'circle' \| 'square'`    | `'circle'`   | Shape of progress dots. |
 | `pointSize`     | `number`                  | `10`         | Progress dot size (width/height, px). |
 | `pointsGap`     | `number`                  | `10`         | Horizontal gap between dots (px). |
@@ -140,12 +141,15 @@ All props are optional unless stated otherwise.
 | Prop                        | Type     | Default                               | Description |
 |-----------------------------|----------|---------------------------------------|-------------|
 | `modalBackgroundColor`      | `string` | `'transparent'`                       | Modal content background. |
-| `modalOverlayColor`         | `string` | `'rgba(34, 27, 88, 0.92)'`           | Overlay background color. |
+| `modalOverlayColor`         | `string` | `'rgba(45, 41, 38, 0.85)'`           | Overlay background color. |
 | `modalOverlayOpacity`       | `number` | `1`                                   | Overlay opacity when open. |
-| `modalOverlayBlur`          | `number` | `0`                                   | Overlay blur in pixels. |
-| `modalOverlayShadow`        | `string` | `'0px 0px 10px 0px rgba(0, 0, 0, 0.1)'` | Box-shadow for modal content. |
+| `modalOverlayBlur`          | `number` | `5`                                   | Overlay blur in pixels. |
+| `modalOverlayShadow`        | `string` | `'none'`                              | Box-shadow for modal content. |
 | `modalOverlayTransition`    | `string` | `'all 0.3s ease-in-out'`             | CSS transition for overlay. |
 | `modalOverlayTransitionDuration` | `number` | `300`                           | Transition duration in ms. |
+| `modalArrowColor`           | `string` | `'#FFFFFF'`                          | Color for navigation arrows inside the modal gallery. |
+| `modalArrowHoverColor`      | `string` | `'#D4AF37'`                          | Hover color for modal navigation arrows. |
+| `modalPointColor`           | `string` | `'rgba(255, 255, 255, 0.3)'`         | Active progress dot color in the modal gallery. |
 
 `IBreakpoints` is:
 

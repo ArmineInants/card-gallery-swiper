@@ -38,7 +38,7 @@ export const Card: React.FC<CardProps> = ({
 		>
 			<CardImageSlot>
 				<LazyLoad once offset={500}>
-					<Image shimmerColor={borderColor} alt="novatar" url={imageUrl} loading="eager" withShimmer />
+					<Image shimmerColor={borderColor} alt="image" url={imageUrl} loading="eager" withShimmer />
 				</LazyLoad>
 			</CardImageSlot>
 		</CardStyle>

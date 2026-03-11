@@ -5,7 +5,7 @@ import { ModalGallery } from './components/modalGallery/ModalGallery';
 import { ArrowRightIcon } from './components/icons/ArrowRightIcon';
 import {
 	Section,
-	NovatarList,
+	List,
 	SliderList,
 	SliderConstraintWrapper,
 	SliderConstraintInner,
@@ -34,7 +34,7 @@ export interface IBreakpoints {
 export interface CardGallerySwiperProps {
 	imageUrls: Record<number, string>;
 	withModal?: boolean;
-	pointsCount?: 3 | 4 | 5 | 6;
+	pointsCountDefault?: 3 | 4 | 5 | 6;
 	pointsType?: 'circle' | 'square';
 	pointSize?: number;
 	pointsGap?: number;
@@ -47,6 +47,9 @@ export interface CardGallerySwiperProps {
 	arrowColor?: string;
 	arrowHoverColor?: string;
 	pointColor?: string;
+	modalArrowColor?: string;
+	modalPointColor?: string;
+	modalArrowHoverColor?: string;
 	modalBackgroundColor?: string;
 	modalOverlayColor?: string;
 	modalOverlayOpacity?: number;
@@ -67,7 +70,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		laptop: 24,
 		desktop: 24,
 	},
-	pointsCount = 5,
+	pointsCountDefault = 5,
 	pointsType = 'circle',
 	pointSize = 10,
 	pointsGap = 10,
@@ -97,19 +100,22 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		laptop: 300,
 		desktop: 400,
 	},
-	arrowColor = '#ffffff',
-	pointColor = '#56CCF2',
-	arrowHoverColor = '#56CCF2',
+	arrowColor = '#2D2926',
+	pointColor = '#D1CDC7',
+	arrowHoverColor = '#8C7355',
 	modalBackgroundColor = 'transparent',
-	modalOverlayColor = 'rgba(34, 27, 88, 0.92)',
+	modalOverlayColor = 'rgba(45, 41, 38, 0.85)',
+	modalArrowColor = '#FFFFFF',
+	modalPointColor = 'rgba(255, 255, 255, 0.3)',
+	modalArrowHoverColor = '#D4AF37',
 	modalOverlayOpacity = 1,
-	modalOverlayBlur = 0,
-	modalOverlayShadow = '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
+	modalOverlayBlur = 5,
+	modalOverlayShadow = 'none',
 	modalOverlayTransition = 'all 0.3s ease-in-out',
 	modalOverlayTransitionDuration = 300,
 	cardClassName,
 	cardBorderWidth = 2,
-	cardBorderColor = '#251f97',
+	cardBorderColor = '#E5E2DF',
 }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentActivePoint, setCurrentActivePoint] = useState(1);
@@ -147,9 +153,10 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const cardWidth = cardWidths[device as keyof typeof cardWidths];
 	const cardHeight = cardHeights[device as keyof typeof cardHeights];
 	const cardCount = Object.keys(imageUrls).length;
-	const slidesPerView = Math.floor(containerMaxWidth / cardWidth);
-	const totalSlides = Math.ceil(cardCount / slidesPerView);
 	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween];
+	const slidesPerView = Math.floor(containerMaxWidth / cardWidth);
+	const totalSlides = Math.ceil(cardCount / slidesPerView) || 1;
+	const pointsCount = Math.min(totalSlides, pointsCountDefault);
 
 	const onClickImage = (id: number) => {
 		if (!withModal) return;
@@ -202,6 +209,11 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		}
 
 		const bar = sliderNavElement.current;
+		if (totalSlides <= pointsCount) {
+			setCurrentActivePoint(activePoint);
+			scrollRafRef.current = null;
+			return;
+		}
 		if (currentActivePoint > activePoint && activePoint > 1 && bar && activePoint < totalSlides - 1) {
 			const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
 			const direction = currentActivePoint - activePoint;
@@ -255,7 +267,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	return (
 		<>
 			<Section className={className}>
-				<NovatarList $cssMax={cssMax}>
+				<List $cssMax={cssMax}>
 					<SliderList ref={sliderElement} onScroll={onScroll} $cssMax={cssMax}>
 						<SliderConstraintWrapper containerMaxWidth={containerMaxWidth}>
 							<SliderConstraintInner ref={sliderContentWrapper} $cssMax={cssMax} $containerMaxWidths={containerMaxWidths} $cardWidth={cardWidth} $cardHeight={cardHeight} $spaceBetween={spaceBetweenValue}>
@@ -275,39 +287,41 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 							</SliderConstraintInner>
 						</SliderConstraintWrapper>
 					</SliderList>
-				</NovatarList>
-				<ConstrainedBox containerMaxWidth={containerMaxWidth}>
-					<NavigationWrapper>
-						<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
-							<ArrowRightIcon color={arrowColor} />
-						</NavigationButton>
-						<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
-							<ProgressBar
-								style={{ width: `${delta * totalSlides + ((pointSize + pointsGap/2) * pointsCount) / totalSlides}px` }}
-								ref={sliderNavElement}
+				</List>
+				{pointsCount > 1 && (
+					<ConstrainedBox containerMaxWidth={containerMaxWidth}>
+						<NavigationWrapper>
+							<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
+								<ArrowRightIcon color={arrowColor} />
+							</NavigationButton>
+							<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
+								<ProgressBar
+									style={{ width: `${delta * totalSlides + 6}px` }}
+									ref={sliderNavElement}
+								>
+									{Array.from({ length: totalSlides }, (_, idx) => idx + 1).map((i) => (
+										<ProgressPoint
+											key={i}
+											$active={currentActivePoint === i}
+											$pointColor={pointColor}
+											$pointsType={pointsType}
+											$pointSize={pointSize}
+											$pointsGap={pointsGap}
+										/>
+									))}
+								</ProgressBar>
+							</ProgressBarVisible>
+							<NavigationButton
+								aria-label="Next slides"
+								$active={currentActivePoint < totalSlides}
+								$hoverColor={arrowHoverColor}
+								onClick={() => currentActivePoint < totalSlides && onSlide('right')}
 							>
-								{Array.from({ length: totalSlides }, (_, idx) => idx + 1).map((i) => (
-									<ProgressPoint
-										key={i}
-										$active={currentActivePoint === i}
-										$pointColor={pointColor}
-										$pointsType={pointsType}
-										$pointSize={pointSize}
-										$pointsGap={pointsGap}
-									/>
-								))}
-							</ProgressBar>
-						</ProgressBarVisible>
-						<NavigationButton
-							aria-label="Next slides"
-							$active={currentActivePoint < totalSlides}
-							$hoverColor={arrowHoverColor}
-							onClick={() => currentActivePoint < totalSlides && onSlide('right')}
-						>
-							<ArrowRightIcon color={arrowColor} />
-						</NavigationButton>
-					</NavigationWrapper>
-				</ConstrainedBox>
+								<ArrowRightIcon color={arrowColor} />
+							</NavigationButton>
+						</NavigationWrapper>
+					</ConstrainedBox>
+				)}
 			</Section>
 			{withModal && (
 				<ModalContainer style={{ display: isModalOpen ? 'block' : 'none' }}>
@@ -318,10 +332,10 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					imagesList={imageUrls}
 					setCurrentImage={setCurrentImage}
 					cssMax={cssMax}
-					pointsCount={pointsCount}
-					pointColor={pointColor}
-					arrowColor={arrowColor}
-					arrowHoverColor={arrowHoverColor}
+					pointsCount={Math.min(cardCount, pointsCountDefault)}
+					pointColor={modalPointColor}
+					arrowColor={modalArrowColor}
+					arrowHoverColor={modalArrowHoverColor}
 					modalBackgroundColor={modalBackgroundColor}
 					modalOverlayColor={modalOverlayColor}
 					modalOverlayOpacity={modalOverlayOpacity}

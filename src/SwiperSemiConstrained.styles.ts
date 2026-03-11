@@ -12,7 +12,7 @@ export const Section = styled.section`
   }
 `;
 
-export const NovatarList = styled.div<{ $cssMax: ICssMax }>`
+export const List = styled.div<{ $cssMax: ICssMax }>`
   margin: 0;
 `;
 
@@ -113,15 +113,13 @@ export const NavigationButton = styled.button<{ $active?: boolean; $left?: boole
   background: transparent;
   padding: 0;
 
-  &:hover {
-    svg {
-      fill: ${({ $hoverColor }) => $hoverColor} !important;
+  ${({$active, $hoverColor}) => $active && $hoverColor && `
+    &:hover {
+      svg {
+        fill: ${$hoverColor} !important;
+      }
     }
-  }
-
-  svg {
-    transition: fill 0.2s ease-in;
-  }
+  `}
 
   ${({ $left }) => $left && `transform: rotate(180deg);`};
 `;
@@ -138,6 +136,7 @@ export const ProgressBar = styled.div`
   justify-content: center;
   align-items: center;
   width: auto;
+  win-width: 100%;
   height: 100%;
   transition: transform 0.5s;
 `;
