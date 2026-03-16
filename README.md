@@ -109,6 +109,7 @@ All props are optional unless stated otherwise.
 |--------------|------------------------------|---------|-------------|
 | `imageUrls`* | `Record<number, string>`     | –       | Map from index (starting at 1) to image URL. **Required.** |
 | `withModal`  | `boolean`                    | `true`  | Whether clicking a card opens the modal gallery. |
+| `fullScreenMode` | `boolean`                | `true` | When `true`, the gallery uses the full viewport width instead of being constrained by `containerMaxWidths`. |
 
 #### Layout / responsiveness
 
@@ -117,8 +118,8 @@ All props are optional unless stated otherwise.
 | `pointsCountDefault`   | `3 \| 4 \| 5 \| 6`| `5`                               | Number of progress dots. |
 | `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
 | `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
-| `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). |
-| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card width per breakpoint (px). |
+| `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). Controls how wide the track can be at each breakpoint; together with `cardWidths` it determines how many cards fit per view. |
+| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card width per breakpoint (px). Combined with `containerMaxWidths`, this effectively defines the default `slidesPerView` at each breakpoint. |
 | `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card height per breakpoint (px). |
 
 #### Styling

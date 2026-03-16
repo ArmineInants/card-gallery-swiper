@@ -38,6 +38,7 @@ export interface CardGallerySwiperProps {
 	pointsType?: 'circle' | 'square';
 	pointSize?: number;
 	pointsGap?: number;
+	fullScreenMode?: boolean;
 	spaceBetween?: IBreakpoints;
 	breakpoints?: IBreakpoints;
 	containerMaxWidths?: IBreakpoints;
@@ -76,6 +77,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	pointsGap = 10,
 	imageUrls,
 	className,
+	fullScreenMode = true,
 	breakpoints = {
 		mobile: 360,
 		tablet: 768,
@@ -270,7 +272,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				<List $cssMax={cssMax}>
 					<SliderList ref={sliderElement} onScroll={onScroll} $cssMax={cssMax}>
 						<SliderConstraintWrapper containerMaxWidth={containerMaxWidth}>
-							<SliderConstraintInner ref={sliderContentWrapper} $cssMax={cssMax} $containerMaxWidths={containerMaxWidths} $cardWidth={cardWidth} $cardHeight={cardHeight} $spaceBetween={spaceBetweenValue}>
+							<SliderConstraintInner ref={sliderContentWrapper} $cssMax={cssMax} $containerMaxWidths={containerMaxWidths} $cardWidth={cardWidth} $cardHeight={cardHeight} $spaceBetween={spaceBetweenValue} $fullScreenMode={fullScreenMode}>
 								{Array.from({ length: cardCount }, (_, idx) => idx + 1).map((i) => (
 									<Card
 										imageUrl={imageUrls[i]}

@@ -43,31 +43,42 @@ export const SliderConstraintWrapper = styled(
   justify-content: center;
 `;
 
-export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMaxWidths: IBreakpoints, $cardWidth: number, $cardHeight: number, $spaceBetween: number }>`
+export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMaxWidths: IBreakpoints, $cardWidth: number, $cardHeight: number, $spaceBetween: number, $fullScreenMode: boolean }>`
   display: block;
   width: ${({ $cardWidth }) => $cardWidth}px;
   height: ${({ $cardHeight }) => $cardHeight}px;
 
   > div {
     transition: transform 0.2s ease-in;
+    ${({ $fullScreenMode, $containerMaxWidths, $cssMax, $spaceBetween }) => $fullScreenMode ? `
+      &:last-child {
+        margin-right: calc((100vw - ${$containerMaxWidths.desktop }px) / 2);
 
-    &:last-child {
-      margin-right: calc((100vw - ${({ $containerMaxWidths }) => $containerMaxWidths.desktop }px) / 2);
+        @media (max-width: ${$cssMax.LAPTOP_MAX }px) {
+          margin-right: calc((100vw - ${$containerMaxWidths.laptop }px) / 2);
+        }
 
-      @media (max-width: ${({ $cssMax }) => $cssMax.LAPTOP_MAX }px) {
-        margin-right: calc((100vw - ${({ $containerMaxWidths }) => $containerMaxWidths.laptop }px) / 2);
-      }
-      @media (max-width: ${({ $cssMax }) => $cssMax.TABLET_MAX }px) {
-        margin-right: calc((100vw - ${({ $containerMaxWidths }) => $containerMaxWidths.tablet }px) / 2);
-      }
-      @media (max-width: ${({ $cssMax }) => $cssMax.MOBILE_MAX }px) {
-        margin-right: calc((100vw - ${({ $containerMaxWidths }) => $containerMaxWidths.mobile }px) / 2);
-      }
-      @media (max-width: 359px) {
-        margin-right: calc((100vw - 288px) / 2);
-      }
-    }
+        @media (max-width: ${$cssMax.TABLET_MAX }px) {
+          margin-right: calc((100vw - ${$containerMaxWidths.tablet }px) / 2);
+        }
 
+        @media (max-width: ${$cssMax.MOBILE_MAX }px) {
+          margin-right: calc((100vw - ${$containerMaxWidths.mobile }px) / 2);
+        }
+
+        @media (max-width: 359px) {
+          margin-right: calc((100vw - 288px) / 2);
+        }
+      }
+    ` : `
+      &:last-child {
+        margin-right: ${$spaceBetween}px;
+
+      }
+      &:first-child {
+        margin-left: ${$spaceBetween}px;
+      }
+    `}
     &:hover {
       transform: scale(1.05);
 
