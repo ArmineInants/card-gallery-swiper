@@ -209,7 +209,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 
 		const maxScrollLeft = fullScreenMode ? (cardWidth + spaceBetweenValue) * cardCount - spaceBetweenValue - containerMaxWidth : (cardWidth + spaceBetweenValue) * cardCount + spaceBetweenValue - containerMaxWidth;
 
-		if (scrollLeft === maxScrollLeft) {
+		if (Math.round(scrollLeft) === Math.round(maxScrollLeft)) {
 			activePoint = totalSlides;
 		}
 		if (activePoint > totalSlides) {
