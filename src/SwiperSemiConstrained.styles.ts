@@ -52,7 +52,11 @@ export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMa
     transition: transform 0.2s ease-in;
     ${({ $fullScreenMode, $containerMaxWidths, $cssMax, $spaceBetween }) => $fullScreenMode ? `
       &:last-child {
-        margin-right: calc((100vw - ${$containerMaxWidths.desktop }px) / 2);
+        margin-right: calc((100vw - ${$containerMaxWidths.large }px) / 2);
+
+        @media (max-width: ${$cssMax.DESKTOP_MAX }px) {
+          margin-right: calc((100vw - ${$containerMaxWidths.desktop }px) / 2);
+        }
 
         @media (max-width: ${$cssMax.LAPTOP_MAX }px) {
           margin-right: calc((100vw - ${$containerMaxWidths.laptop }px) / 2);

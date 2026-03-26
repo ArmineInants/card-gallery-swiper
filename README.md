@@ -15,6 +15,8 @@ Built with **TypeScript** and **styled-components**, designed to be dropped into
   <img src="./docs/Card-Gallery-Screenshot-2.jpg" alt="Card Gallery Swiper screenshot 2" width="40%" />
 </p>
 
+The demo page renders **two variants**: `fullScreenMode` enabled (default) and `fullScreenMode={false}` (constrained by `containerMaxWidths`).
+
 ### Features
 
 - **Container-aligned layout** – the gallery starts aligned with the page container while extending to the full right edge of the screen.
@@ -116,11 +118,11 @@ All props are optional unless stated otherwise.
 | Prop                | Type              | Default                              | Description |
 |---------------------|-------------------|--------------------------------------|-------------|
 | `pointsCountDefault`   | `3 \| 4 \| 5 \| 6`| `5`                               | Number of progress dots. |
-| `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24 }` | Gap between cards per breakpoint (px). |
-| `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440 }` | Pixel widths for each device tier. |
-| `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128 }` | Max container width per breakpoint (px). Controls how wide the track can be at each breakpoint; together with `cardWidths` it determines how many cards fit per view. |
-| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card width per breakpoint (px). Combined with `containerMaxWidths`, this effectively defines the default `slidesPerView` at each breakpoint. |
-| `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400 }` | Card height per breakpoint (px). |
+| `spaceBetween`      | `IBreakpoints`    | `{ mobile: 12, tablet: 24, laptop: 24, desktop: 24, large: 24 }` | Gap between cards per breakpoint (px). |
+| `breakpoints`       | `IBreakpoints`    | `{ mobile: 360, tablet: 768, laptop: 1280, desktop: 1440, large: 1920 }` | Pixel widths for each device tier. |
+| `containerMaxWidths`| `IBreakpoints`    | `{ mobile: 360, tablet: 688, laptop: 1040, desktop: 1128, large: 1440 }` | Max container width per breakpoint (px). Controls how wide the track can be at each breakpoint; together with `cardWidths` it determines how many cards fit per view. |
+| `cardWidths`        | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400, large: 400 }` | Card width per breakpoint (px). Combined with `containerMaxWidths`, this effectively defines the default `slidesPerView` at each breakpoint. |
+| `cardHeights`       | `IBreakpoints`    | `{ mobile: 288, tablet: 300, laptop: 300, desktop: 400, large: 400 }` | Card height per breakpoint (px). |
 
 #### Styling
 
@@ -160,6 +162,7 @@ export interface IBreakpoints {
   tablet: number;
   laptop: number;
   desktop: number;
+  large: number;
 }
 ```
 

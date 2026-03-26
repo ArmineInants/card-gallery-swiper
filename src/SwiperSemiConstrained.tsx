@@ -21,6 +21,7 @@ export interface ICssMax {
 	MOBILE_MAX: number;
 	TABLET_MAX: number;
 	LAPTOP_MAX: number;
+	DESKTOP_MAX: number;
 }
 
 export interface IBreakpoints {
@@ -28,6 +29,7 @@ export interface IBreakpoints {
 	tablet: number;
 	laptop: number;
 	desktop: number;
+	large: number;
 }
 
 
@@ -70,6 +72,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		tablet: 24,
 		laptop: 24,
 		desktop: 24,
+		large: 24,
 	},
 	pointsCountDefault = 5,
 	pointsType = 'circle',
@@ -83,24 +86,28 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		tablet: 768,
 		laptop: 1280,
 		desktop: 1440,
+		large: 1920,
 	},
 	containerMaxWidths = {
 		mobile: 360,
 		tablet: 688,
 		laptop: 1040,
 		desktop: 1128,
+		large: 1440,
 	},
 	cardWidths = {
 		mobile: 288,
 		tablet: 300,
 		laptop: 300,
 		desktop: 400,
+		large: 400,
 	},
 	cardHeights = {
 		mobile: 288,
 		tablet: 300,
 		laptop: 300,
 		desktop: 400,
+		large: 400,
 	},
 	arrowColor = '#2D2926',
 	pointColor = '#D1CDC7',
@@ -151,11 +158,11 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		(key) => breakpoints[key as keyof typeof breakpoints] === breakValue
 	);
 
-	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths];
-	const cardWidth = cardWidths[device as keyof typeof cardWidths];
-	const cardHeight = cardHeights[device as keyof typeof cardHeights];
+	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths] || 288;
+	const cardWidth = cardWidths[device as keyof typeof cardWidths] || 288;
+	const cardHeight = cardHeights[device as keyof typeof cardHeights] || 288;
 	const cardCount = Object.keys(imageUrls).length;
-	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween];
+	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween] || 12;
 	const slidesPerView = Math.floor(containerMaxWidth / cardWidth);
 	const totalSlides = Math.ceil(cardCount / slidesPerView) || 1;
 	const pointsCount = Math.min(totalSlides, pointsCountDefault);
@@ -200,7 +207,9 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		const pointPercent = 100 * percent;
 		let activePoint = (Math.round(pointPercent) + 1) || 1;
 
-		if (scrollLeft === (cardWidth + spaceBetweenValue) * cardCount - spaceBetweenValue - containerMaxWidth) {
+		const maxScrollLeft = fullScreenMode ? (cardWidth + spaceBetweenValue) * cardCount - spaceBetweenValue - containerMaxWidth : (cardWidth + spaceBetweenValue) * cardCount + spaceBetweenValue - containerMaxWidth;
+
+		if (scrollLeft === maxScrollLeft) {
 			activePoint = totalSlides;
 		}
 		if (activePoint > totalSlides) {
@@ -264,6 +273,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		MOBILE_MAX: breakpoints.tablet - 1,
 		TABLET_MAX: breakpoints.laptop - 1,
 		LAPTOP_MAX: breakpoints.desktop - 1,
+		DESKTOP_MAX: breakpoints.large - 1,
 	}
 
 	return (
