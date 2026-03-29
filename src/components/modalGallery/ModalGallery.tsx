@@ -33,6 +33,7 @@ interface IModalGallery {
 	pointsGap: number;
 	pointSize: number;
 	pointsType: 'circle' | 'square';
+	className: string;
 }
 
 export const ModalGallery: React.FC<IModalGallery> = ({
@@ -59,6 +60,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	pointsGap,
 	pointSize,
 	pointsType,
+	className,
 }) => {
 	const imageRef = useRef<HTMLDivElement>(null);
 	const barRef = useRef<HTMLDivElement | null>(null);
@@ -108,10 +110,6 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 		setCurrentImage(newCurrentImage);
 	};
 
-	const setWidth = (e: React.SyntheticEvent<HTMLImageElement>) => {
-		setModalWidth(e.currentTarget.offsetWidth);
-	};
-
 	return (
 		<ModalBox
 			$cssMax={cssMax}
@@ -141,6 +139,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			}}
 			isOpened={isOpenedGalleryModal}
 			frameless
+			className={className}
 		>
 			<ImageWrapper $cssMax={cssMax} ref={imageRef} id="image-gallery" $cardBorderWidth={cardBorderWidth} $cardBorderColor={cardBorderColor}>
 				<Image

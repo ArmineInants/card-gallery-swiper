@@ -63,4 +63,10 @@ body {
 	padding-bottom: 24px;
 	padding-top: 24px;
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+	padding-left: 24px;
+	padding-right: 24px;
+	@media (max-width: 767px) {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 }

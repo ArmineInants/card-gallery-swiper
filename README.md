@@ -153,6 +153,7 @@ All props are optional unless stated otherwise.
 | `modalArrowColor`           | `string` | `'#FFFFFF'`                          | Color for navigation arrows inside the modal gallery. |
 | `modalArrowHoverColor`      | `string` | `'#D4AF37'`                          | Hover color for modal navigation arrows. |
 | `modalPointColor`           | `string` | `'rgba(255, 255, 255, 0.3)'`         | Active progress dot color in the modal gallery. |
+| `modalClassName`            | `string` | `''`                                  | Class name applied to the modal gallery container (the modal content box). |
 
 `IBreakpoints` is:
 

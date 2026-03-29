@@ -43,44 +43,20 @@ export const SliderConstraintWrapper = styled(
   justify-content: center;
 `;
 
-export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMaxWidths: IBreakpoints, $cardWidth: number, $cardHeight: number, $spaceBetween: number, $fullScreenMode: boolean }>`
+export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMaxWidth: number, $cardWidth: number, $cardHeight: number, $spaceBetween: number, $fullScreenMode: boolean }>`
   display: block;
   width: ${({ $cardWidth }) => $cardWidth}px;
   height: ${({ $cardHeight }) => $cardHeight}px;
 
   > div {
     transition: transform 0.2s ease-in;
-    ${({ $fullScreenMode, $containerMaxWidths, $cssMax, $spaceBetween }) => $fullScreenMode ? `
+    ${({ $fullScreenMode, $containerMaxWidth}) => $fullScreenMode ? `
       &:last-child {
-        margin-right: calc((100vw - ${$containerMaxWidths.large }px) / 2);
-
-        @media (max-width: ${$cssMax.DESKTOP_MAX }px) {
-          margin-right: calc((100vw - ${$containerMaxWidths.desktop }px) / 2);
-        }
-
-        @media (max-width: ${$cssMax.LAPTOP_MAX }px) {
-          margin-right: calc((100vw - ${$containerMaxWidths.laptop }px) / 2);
-        }
-
-        @media (max-width: ${$cssMax.TABLET_MAX }px) {
-          margin-right: calc((100vw - ${$containerMaxWidths.tablet }px) / 2);
-        }
-
-        @media (max-width: ${$cssMax.MOBILE_MAX }px) {
-          margin-right: calc((100vw - ${$containerMaxWidths.mobile }px) / 2);
-        }
-
-        @media (max-width: 359px) {
-          margin-right: calc((100vw - 288px) / 2);
-        }
+        margin-right: calc((100vw - ${$containerMaxWidth }px) / 2);
       }
     ` : `
       &:last-child {
-        margin-right: ${$spaceBetween}px;
-
-      }
-      &:first-child {
-        margin-left: ${$spaceBetween}px;
+        margin-right: 0px;
       }
     `}
     &:hover {
@@ -102,10 +78,6 @@ export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMa
     width: ${({ $cardWidth }) => $cardWidth}px;
     height: ${({ $cardHeight }) => $cardHeight}px;
 
-  }
-
-  @media (max-width: ${({ $cssMax }) => $cssMax.MOBILE_MAX }px) {
-    padding: 0;
   }
 `;
 

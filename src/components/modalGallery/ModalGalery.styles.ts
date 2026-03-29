@@ -4,6 +4,7 @@ import { ICssMax } from '../../SwiperSemiConstrained';
 import { Modal } from '../modal/Modal';
 
 export const ModalBox = styled(Modal as React.ComponentType<any>)<{ $cssMax: ICssMax }>`
+    z-index: 1000;
     & * {
         padding: 0 !important;
     }

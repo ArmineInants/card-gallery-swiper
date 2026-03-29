@@ -52,6 +52,7 @@ export interface CardGallerySwiperProps {
 	pointColor?: string;
 	modalArrowColor?: string;
 	modalPointColor?: string;
+	modalClassName?: string;
 	modalArrowHoverColor?: string;
 	modalBackgroundColor?: string;
 	modalOverlayColor?: string;
@@ -122,7 +123,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	modalOverlayShadow = 'none',
 	modalOverlayTransition = 'all 0.3s ease-in-out',
 	modalOverlayTransitionDuration = 300,
-	cardClassName,
+	modalClassName = "",
+	cardClassName = "",
 	cardBorderWidth = 2,
 	cardBorderColor = '#E5E2DF',
 }) => {
@@ -158,12 +160,12 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		(key) => breakpoints[key as keyof typeof breakpoints] === breakValue
 	);
 
-	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths] || 288;
-	const cardWidth = cardWidths[device as keyof typeof cardWidths] || 288;
-	const cardHeight = cardHeights[device as keyof typeof cardHeights] || 288;
+	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween] || spaceBetween.mobile;
+	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths] || Math.min(viewportWidth - spaceBetweenValue * 2, containerMaxWidths.mobile);
+	const cardWidth = cardWidths[device as keyof typeof cardWidths] || Math.min(cardWidths.mobile, containerMaxWidth);
+	const cardHeight = cardHeights[device as keyof typeof cardHeights] || Math.min(cardHeights.mobile, containerMaxWidth);
 	const cardCount = Object.keys(imageUrls).length;
-	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween] || 12;
-	const slidesPerView = Math.floor(containerMaxWidth / cardWidth);
+	const slidesPerView = Math.floor(containerMaxWidth / cardWidth) || 1;
 	const totalSlides = Math.ceil(cardCount / slidesPerView) || 1;
 	const pointsCount = Math.min(totalSlides, pointsCountDefault);
 
@@ -207,7 +209,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		const pointPercent = 100 * percent;
 		let activePoint = (Math.round(pointPercent) + 1) || 1;
 
-		const maxScrollLeft = fullScreenMode ? (cardWidth + spaceBetweenValue) * cardCount - spaceBetweenValue - containerMaxWidth : (cardWidth + spaceBetweenValue) * cardCount + spaceBetweenValue - containerMaxWidth;
+		const maxScrollLeft = (cardWidth + spaceBetweenValue) * cardCount - spaceBetweenValue - containerMaxWidth;
 
 		if (Math.round(scrollLeft) === Math.round(maxScrollLeft)) {
 			activePoint = totalSlides;
@@ -282,7 +284,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				<List $cssMax={cssMax}>
 					<SliderList ref={sliderElement} onScroll={onScroll} $cssMax={cssMax}>
 						<SliderConstraintWrapper containerMaxWidth={containerMaxWidth}>
-							<SliderConstraintInner ref={sliderContentWrapper} $cssMax={cssMax} $containerMaxWidths={containerMaxWidths} $cardWidth={cardWidth} $cardHeight={cardHeight} $spaceBetween={spaceBetweenValue} $fullScreenMode={fullScreenMode}>
+							<SliderConstraintInner ref={sliderContentWrapper} $cssMax={cssMax} $containerMaxWidth={containerMaxWidth} $cardWidth={cardWidth} $cardHeight={cardHeight} $spaceBetween={spaceBetweenValue} $fullScreenMode={fullScreenMode}>
 								{Array.from({ length: cardCount }, (_, idx) => idx + 1).map((i) => (
 									<Card
 										imageUrl={imageUrls[i]}
@@ -337,31 +339,32 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 			</Section>
 			{withModal && (
 				<ModalContainer style={{ display: isModalOpen ? 'block' : 'none' }}>
-				<ModalGallery
-					isOpenedGalleryModal={isModalOpen}
-					closeGalleryModal={() => setIsModalOpen(false)}
-					currentImage={currentImage}
-					imagesList={imageUrls}
-					setCurrentImage={setCurrentImage}
-					cssMax={cssMax}
-					pointsCount={Math.min(cardCount, pointsCountDefault)}
-					pointColor={modalPointColor}
-					arrowColor={modalArrowColor}
-					arrowHoverColor={modalArrowHoverColor}
-					modalBackgroundColor={modalBackgroundColor}
-					modalOverlayColor={modalOverlayColor}
-					modalOverlayOpacity={modalOverlayOpacity}
-					modalOverlayBlur={modalOverlayBlur}
-					modalOverlayShadow={modalOverlayShadow}
-					modalOverlayTransition={modalOverlayTransition}
-					modalOverlayTransitionDuration={modalOverlayTransitionDuration}
-					cardBorderWidth={cardBorderWidth}
-					cardBorderColor={cardBorderColor}
-					delta={delta}
-					pointsGap={pointsGap}
-					pointSize={pointSize}
-					pointsType={pointsType}
-				/>
+					<ModalGallery
+						isOpenedGalleryModal={isModalOpen}
+						closeGalleryModal={() => setIsModalOpen(false)}
+						currentImage={currentImage}
+						imagesList={imageUrls}
+						setCurrentImage={setCurrentImage}
+						cssMax={cssMax}
+						pointsCount={Math.min(cardCount, pointsCountDefault)}
+						pointColor={modalPointColor}
+						arrowColor={modalArrowColor}
+						arrowHoverColor={modalArrowHoverColor}
+						modalBackgroundColor={modalBackgroundColor}
+						modalOverlayColor={modalOverlayColor}
+						modalOverlayOpacity={modalOverlayOpacity}
+						modalOverlayBlur={modalOverlayBlur}
+						modalOverlayShadow={modalOverlayShadow}
+						modalOverlayTransition={modalOverlayTransition}
+						modalOverlayTransitionDuration={modalOverlayTransitionDuration}
+						cardBorderWidth={cardBorderWidth}
+						cardBorderColor={cardBorderColor}
+						delta={delta}
+						pointsGap={pointsGap}
+						pointSize={pointSize}
+						pointsType={pointsType}
+						className={modalClassName}
+					/>
 				</ModalContainer>
 			)}
 		</>

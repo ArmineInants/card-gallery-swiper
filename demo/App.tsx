@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SwiperSemiConstrained } from '../src';
 import {ConstrainedBox} from '../src/components/constraints/ConstrainedBox';
 
+const imageUrls: Record<number, string> = {
+	1: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&h=800&q=80', // bright bedroom
+	2: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&h=800&q=80', // dining area
+	3: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&h=800&q=80', // home office
+	4: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&h=800&q=80', // entryway
+	5: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&h=800&q=80', // loft
+	6: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&h=800&q=80', // bright bedroom
+	7: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&h=800&q=80', // dining area
+	8: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&h=800&q=80', // home office
+	9: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&h=800&q=80', // entryway
+	10: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&h=800&q=80', // loft
+};
+
 export const App: React.FC = () => {
-	const imageUrls: Record<number, string> = {
-		1: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&h=800&q=80', // bright bedroom
-		2: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&h=800&q=80', // dining area
-		3: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&h=800&q=80', // home office
-		4: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&h=800&q=80', // entryway
-		5: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&h=800&q=80', // loft
-		6: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&h=800&q=80', // bright bedroom
-		7: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&h=800&q=80', // dining area
-		8: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&h=800&q=80', // home office
-		9: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&h=800&q=80', // entryway
-		10: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&h=800&q=80', // loft
-	};
-	const innerWidth = window.innerWidth;
-	const containerMaxWidth = innerWidth < 360 ? 320 : innerWidth < 768 ? 360 : innerWidth < 1280 ? 688 : innerWidth < 1440 ? 1040 : innerWidth < 1920 ? 1128 : 1440;
+	const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1920);
+
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		const handleResize = () => setViewportWidth(window.innerWidth);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	const containerMaxWidth = viewportWidth < 360 ? viewportWidth - 24 : viewportWidth < 768 ? 360 : viewportWidth < 1280 ? 688 : viewportWidth < 1440 ? 1040 : viewportWidth < 1920 ? 1128 : 1440;
 	return (
 		<main className="app">
 			<div className="demo-header">
@@ -36,6 +45,13 @@ export const App: React.FC = () => {
 					<SwiperSemiConstrained
 						imageUrls={imageUrls}
 						fullScreenMode={false}
+						containerMaxWidths={{
+							mobile: 360 - 24,
+							tablet: 688 - 48,
+							laptop: 1040 - 48,
+							desktop: 1128 - 48,
+							large: 1440 - 48,
+						}}
 					/>
 				</div>
 			</ConstrainedBox>
