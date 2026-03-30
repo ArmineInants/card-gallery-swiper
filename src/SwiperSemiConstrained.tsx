@@ -44,12 +44,15 @@ export interface CardGallerySwiperProps {
 	spaceBetween?: IBreakpoints;
 	breakpoints?: IBreakpoints;
 	containerMaxWidths?: IBreakpoints;
-	cardWidths?: IBreakpoints;
-	cardHeights?: IBreakpoints;
 	className?: string;
 	arrowColor?: string;
 	arrowHoverColor?: string;
 	pointColor?: string;
+	cardWidths?: IBreakpoints;
+	cardHeights?: IBreakpoints;
+	cardClassName?: string;
+	cardBorderWidth?: number;
+	cardBorderColor?: string;
 	modalArrowColor?: string;
 	modalPointColor?: string;
 	modalClassName?: string;
@@ -61,9 +64,8 @@ export interface CardGallerySwiperProps {
 	modalOverlayShadow?: string;
 	modalOverlayTransition?: string;
 	modalOverlayTransitionDuration?: number;
-	cardClassName?: string;
-	cardBorderWidth?: number;
-	cardBorderColor?: string;
+	modalImageWidths?: IBreakpoints;
+	modalImageHeights?: IBreakpoints;
 }
 
 export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
@@ -124,6 +126,20 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	modalOverlayTransition = 'all 0.3s ease-in-out',
 	modalOverlayTransitionDuration = 300,
 	modalClassName = "",
+	modalImageWidths = {
+		mobile: 328,
+		tablet: 504,
+		laptop: 504,
+		desktop: 504,
+		large: 504,
+	},
+	modalImageHeights = {
+		mobile: 328,
+		tablet: 504,
+		laptop: 504,
+		desktop: 504,
+		large: 504,
+	},
 	cardClassName = "",
 	cardBorderWidth = 2,
 	cardBorderColor = '#E5E2DF',
@@ -164,6 +180,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths] || Math.min(viewportWidth - spaceBetweenValue * 2, containerMaxWidths.mobile);
 	const cardWidth = cardWidths[device as keyof typeof cardWidths] || Math.min(cardWidths.mobile, containerMaxWidth);
 	const cardHeight = cardHeights[device as keyof typeof cardHeights] || Math.min(cardHeights.mobile, containerMaxWidth);
+	const modalImageWidth = modalImageWidths[device as keyof typeof modalImageWidths] || Math.min(modalImageWidths.mobile, containerMaxWidth);
+	const modalImageHeight = modalImageHeights[device as keyof typeof modalImageHeights] || Math.min(modalImageHeights.mobile, containerMaxWidth);
 	const cardCount = Object.keys(imageUrls).length;
 	const slidesPerView = Math.floor(containerMaxWidth / cardWidth) || 1;
 	const totalSlides = Math.ceil(cardCount / slidesPerView) || 1;
@@ -357,6 +375,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 						modalOverlayShadow={modalOverlayShadow}
 						modalOverlayTransition={modalOverlayTransition}
 						modalOverlayTransitionDuration={modalOverlayTransitionDuration}
+						modalImageWidth={modalImageWidth}
+						modalImageHeight={modalImageHeight}
 						cardBorderWidth={cardBorderWidth}
 						cardBorderColor={cardBorderColor}
 						delta={delta}

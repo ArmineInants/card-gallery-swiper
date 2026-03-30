@@ -27,6 +27,8 @@ interface IModalGallery {
 	modalOverlayShadow: string;
 	modalOverlayTransition: string;
 	modalOverlayTransitionDuration: number;
+	modalImageWidth: number;
+	modalImageHeight: number;
 	cardBorderWidth: number;
 	cardBorderColor: string;
 	delta: number;
@@ -54,6 +56,8 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	modalOverlayShadow,
 	modalOverlayTransition,
 	modalOverlayTransitionDuration,
+	modalImageWidth,
+	modalImageHeight,
 	cardBorderWidth,
 	cardBorderColor,
 	delta,
@@ -141,7 +145,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			frameless
 			className={className}
 		>
-			<ImageWrapper $cssMax={cssMax} ref={imageRef} id="image-gallery" $cardBorderWidth={cardBorderWidth} $cardBorderColor={cardBorderColor}>
+			<ImageWrapper $cssMax={cssMax} ref={imageRef} id="image-gallery" $cardBorderWidth={cardBorderWidth} $cardBorderColor={cardBorderColor} $modalImageWidth={modalImageWidth} $modalImageHeight={modalImageHeight}>
 				<Image
 					shimmerColor={cardBorderColor}
 					url={(imagesList as any)[currentImage] as string}

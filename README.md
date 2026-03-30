@@ -154,6 +154,8 @@ All props are optional unless stated otherwise.
 | `modalArrowHoverColor`      | `string` | `'#D4AF37'`                          | Hover color for modal navigation arrows. |
 | `modalPointColor`           | `string` | `'rgba(255, 255, 255, 0.3)'`         | Active progress dot color in the modal gallery. |
 | `modalClassName`            | `string` | `''`                                  | Class name applied to the modal gallery container (the modal content box). |
+| `modalImageWidths`          | `IBreakpoints` | `{ mobile: 328, tablet: 504, laptop: 504, desktop: 504, large: 504 }` | Modal image width per breakpoint (px). |
+| `modalImageHeights`         | `IBreakpoints` | `{ mobile: 328, tablet: 504, laptop: 504, desktop: 504, large: 504 }` | Modal image height per breakpoint (px). |
 
 `IBreakpoints` is:
 

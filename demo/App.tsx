@@ -52,6 +52,7 @@ export const App: React.FC = () => {
 							desktop: 1128 - 48,
 							large: 1440 - 48,
 						}}
+						pointsType='square'
 					/>
 				</div>
 			</ConstrainedBox>

@@ -22,7 +22,7 @@ export const ModalWrapper = styled.div<{
     min-height: 100%;
     justify-content: center;
     align-items: center;
-    z-index: 101;
+    z-index: 1000000;
 
     visibility: hidden;
     opacity: 0;

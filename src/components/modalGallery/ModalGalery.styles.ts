@@ -4,14 +4,13 @@ import { ICssMax } from '../../SwiperSemiConstrained';
 import { Modal } from '../modal/Modal';
 
 export const ModalBox = styled(Modal as React.ComponentType<any>)<{ $cssMax: ICssMax }>`
-    z-index: 1000;
     & * {
         padding: 0 !important;
     }
 `;
 
 
-export const ImageWrapper = styled.div<{ $cssMax: ICssMax; $cardBorderWidth?: number; $cardBorderColor?: string }>`
+export const ImageWrapper = styled.div<{ $cssMax: ICssMax; $cardBorderWidth?: number; $cardBorderColor?: string; $modalImageWidth?: number; $modalImageHeight?: number }>`
     position: relative;
     width: auto;
     height: calc(100% - 80px);
@@ -19,14 +18,8 @@ export const ImageWrapper = styled.div<{ $cssMax: ICssMax; $cardBorderWidth?: nu
     width: 504px;
     height: 504px;
     margin-bottom: 20px;
-    @media (max-width: ${({ $cssMax }) => $cssMax.MOBILE_MAX }px){
-        width: 328px;
-        height: 328px;
-    }
-    @media (max-width: 359px){
-        width: 288px;
-        height: 288px;
-    }
+    width: ${({ $modalImageWidth }) => $modalImageWidth}px;
+    height: ${({ $modalImageHeight }) => $modalImageHeight}px;
     
     img {
         width: auto;

@@ -52,17 +52,43 @@ export const Modal: React.FC<IModalProps> = ({
 }) => {
 	const modalWrapperRef = useRef<HTMLDivElement | null>(null);
 	const modalContentRef = createRef<HTMLDivElement>();
+	const prevBodyStylesRef = useRef<{
+		overflow: string;
+		paddingRight: string;
+	}>({
+		overflow: '',
+		paddingRight: '',
+	});
 
 	useEffect(() => {
+		if (typeof document === 'undefined') return;
 		const body = document.body;
 
 		if (isOpened) {
-			body.classList.add('modal-open');
+			prevBodyStylesRef.current = {
+				overflow: body.style.overflow,
+				paddingRight: body.style.paddingRight,
+			};
+
+			// Lock background scroll while modal is open.
+			// Add scrollbar compensation to avoid layout shift.
+			const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+			body.style.overflow = 'hidden';
+			if (scrollbarWidth > 0) {
+				body.style.paddingRight = `${scrollbarWidth}px`;
+			}
 		} else {
-			body.classList.remove('modal-open');
+			body.style.overflow = prevBodyStylesRef.current.overflow;
+			body.style.paddingRight = prevBodyStylesRef.current.paddingRight;
 		}
 
 		modalContentRef.current?.scrollTo({ top: 0 });
+		return () => {
+			// Ensure we restore scroll even if the modal unmounts while open.
+			body.style.overflow = prevBodyStylesRef.current.overflow;
+			body.style.paddingRight = prevBodyStylesRef.current.paddingRight;
+			body.classList.remove('modal-open');
+		};
 	}, [isOpened]);
 
 	const closeWithClickAway = (e: MouseEvent) => {
