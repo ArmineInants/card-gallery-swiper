@@ -45,7 +45,25 @@ Peer dependencies you should already have in your app:
 - `react` / `react-dom`
 - `styled-components`
 
-If you use **Next.js**, make sure your app is configured for **styled-components SSR** (to avoid flash of unstyled content).
+#### Next.js
+
+- **Styled-components + SSR:** Configure **styled-components for Next.js** (see [Next.js: styled-components](https://nextjs.org/docs/app/building-your-application/styling/css-in-js#styled-components)) so server and client markup match and you avoid hydration warnings and FOUC.
+
+- **Modal stacking:** The modal gallery uses a **React portal** into `document.body`, so in Next.js (and elsewhere) it sits above app chrome (nav, drawers, layouts) and is not trapped by parent `transform` / `z-index` stacking contexts.
+
+- **Optional — client-only import:** If you still see hydration issues or want this subtree client-only, load the component with `next/dynamic` and `ssr: false`:
+
+```tsx
+import dynamic from "next/dynamic";
+
+const CardGallerySwiper = dynamic(
+  () =>
+    import("card-gallery-swiper").then((mod) => mod.CardGallerySwiper),
+  { ssr: false },
+);
+```
+
+Use `dynamic` only when needed; `ssr: false` means that part of the tree is not rendered on the server.
 
 ---
 

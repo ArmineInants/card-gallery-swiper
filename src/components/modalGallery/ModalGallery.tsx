@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { ICssMax } from '../../SwiperSemiConstrained';
 import {
@@ -29,7 +30,6 @@ function lockBodyScroll() {
 		const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 		body.style.overflow = 'hidden';
 		if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
-		body.classList.add('modal-open');
 	}
 
 	bodyScrollLockCount += 1;
@@ -45,7 +45,6 @@ function unlockBodyScroll() {
 	const body = document.body;
 	body.style.overflow = bodyScrollLockPrevStyles?.overflow ?? '';
 	body.style.paddingRight = bodyScrollLockPrevStyles?.paddingRight ?? '';
-	body.classList.remove('modal-open');
 	bodyScrollLockPrevStyles = null;
 }
 
@@ -250,7 +249,8 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 
 	if (!isOpenedGalleryModal) return null;
 
-	return (
+	/** Portal to `document.body` so `position: fixed` + z-index are not trapped by parent stacking contexts (transform/filter/z-index). */
+	const modalUi = (
 		<ModalOverlay
 			className={className}
 			$cssMax={cssMax}
@@ -347,4 +347,10 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			</ModalBox>
 		</ModalOverlay>
 	);
+
+	if (typeof document === 'undefined') {
+		return null;
+	}
+
+	return createPortal(modalUi, document.body);
 };
