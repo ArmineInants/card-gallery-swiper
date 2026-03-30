@@ -152,6 +152,7 @@ All props are optional unless stated otherwise.
 | `cardClassName` | `string`                  | –            | Class applied to each card. |
 | `cardBorderWidth` | `number`               | `2`          | Card border width (px). |
 | `cardBorderColor` | `string`               | `#251f97`    | Card border color. |
+| `cardShimmerColor` | `string`              | –            | Shimmer placeholder color while the card image loads. Defaults to `cardBorderColor`. |
 | `arrowColor`    | `string`                  | `#2D2926`    | Color for navigation arrows in the swiper. |
 | `arrowHoverColor` | `string`               | `#8C7355`    | Arrow color on hover in the swiper. |
 | `pointColor`    | `string`                  | `#D1CDC7`    | Active progress dot color in the swiper. |

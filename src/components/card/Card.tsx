@@ -12,6 +12,7 @@ interface CardProps {
 	onClickImage: (id: number) => void;
 	borderWidth?: number;
 	borderColor?: string;
+	shimmerColor?: string;
 	clickable: boolean;
 }
 
@@ -23,6 +24,7 @@ export const Card: React.FC<CardProps> = ({
 	cssMax,
 	borderWidth,
 	borderColor,
+	shimmerColor,
 	clickable,
 }) => {
 	return (
@@ -35,7 +37,13 @@ export const Card: React.FC<CardProps> = ({
 			onClick={() => onClickImage(id)}
 		>
 			<CardImageSlot>
-				<Image shimmerColor={borderColor} alt="image" url={imageUrl} loading="lazy" withShimmer />
+				<Image
+					shimmerColor={shimmerColor ?? borderColor}
+					alt="image"
+					url={imageUrl}
+					loading="lazy"
+					withShimmer
+				/>
 			</CardImageSlot>
 		</CardStyle>
 	);

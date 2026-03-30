@@ -60,7 +60,7 @@ export const ShimmerImg = styled(StyledImg)<{ $shimmerColor?: string }>`
         ${({ $shimmerColor }) => $shimmerColor || '#120c40'} 30%,
         ${({ $shimmerColor }) =>
             $shimmerColor
-                ? `${lightenColor($shimmerColor, 0.4)} 50%`
+                ? `${lightenColor($shimmerColor, 0.8)} 50%`
                 : '#887edb 50%'}, // fallback lighter than #120c40
         ${({ $shimmerColor }) => $shimmerColor || '#120c40'} 70%
     ) !important;

@@ -50,6 +50,7 @@ export interface CardGallerySwiperProps {
 	cardClassName?: string;
 	cardBorderWidth?: number;
 	cardBorderColor?: string;
+	cardShimmerColor?: string;
 	modalArrowColor?: string;
 	modalPointColor?: string;
 	modalClassName?: string;
@@ -142,6 +143,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	cardClassName = "",
 	cardBorderWidth = 2,
 	cardBorderColor = '#E5E2DF',
+	cardShimmerColor,
 }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentActivePoint, setCurrentActivePoint] = useState(1);
@@ -312,6 +314,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 										className={cardClassName}
 										borderWidth={cardBorderWidth}
 										borderColor={cardBorderColor}
+										shimmerColor={cardShimmerColor}
 										clickable={withModal}
 									/>
 								))}
