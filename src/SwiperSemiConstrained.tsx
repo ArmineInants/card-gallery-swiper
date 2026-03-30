@@ -14,7 +14,6 @@ import {
 	ProgressBarVisible,
 	ProgressBar,
 	ProgressPoint,
-	ModalContainer,
   } from './SwiperSemiConstrained.styles';
 
 export interface ICssMax {
@@ -31,8 +30,6 @@ export interface IBreakpoints {
 	desktop: number;
 	large: number;
 }
-
-
 export interface CardGallerySwiperProps {
 	imageUrls: Record<number, string>;
 	withModal?: boolean;
@@ -56,6 +53,7 @@ export interface CardGallerySwiperProps {
 	modalArrowColor?: string;
 	modalPointColor?: string;
 	modalClassName?: string;
+	modalExitClassName?: string;
 	modalArrowHoverColor?: string;
 	modalBackgroundColor?: string;
 	modalOverlayColor?: string;
@@ -126,6 +124,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	modalOverlayTransition = 'all 0.3s ease-in-out',
 	modalOverlayTransitionDuration = 300,
 	modalClassName = "",
+	modalExitClassName = "",
 	modalImageWidths = {
 		mobile: 328,
 		tablet: 504,
@@ -356,36 +355,35 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				)}
 			</Section>
 			{withModal && (
-				<ModalContainer style={{ display: isModalOpen ? 'block' : 'none' }}>
-					<ModalGallery
-						isOpenedGalleryModal={isModalOpen}
-						closeGalleryModal={() => setIsModalOpen(false)}
-						currentImage={currentImage}
-						imagesList={imageUrls}
-						setCurrentImage={setCurrentImage}
-						cssMax={cssMax}
-						pointsCount={Math.min(cardCount, pointsCountDefault)}
-						pointColor={modalPointColor}
-						arrowColor={modalArrowColor}
-						arrowHoverColor={modalArrowHoverColor}
-						modalBackgroundColor={modalBackgroundColor}
-						modalOverlayColor={modalOverlayColor}
-						modalOverlayOpacity={modalOverlayOpacity}
-						modalOverlayBlur={modalOverlayBlur}
-						modalOverlayShadow={modalOverlayShadow}
-						modalOverlayTransition={modalOverlayTransition}
-						modalOverlayTransitionDuration={modalOverlayTransitionDuration}
-						modalImageWidth={modalImageWidth}
-						modalImageHeight={modalImageHeight}
-						cardBorderWidth={cardBorderWidth}
-						cardBorderColor={cardBorderColor}
-						delta={delta}
-						pointsGap={pointsGap}
-						pointSize={pointSize}
-						pointsType={pointsType}
-						className={modalClassName}
-					/>
-				</ModalContainer>
+				<ModalGallery
+					isOpenedGalleryModal={isModalOpen}
+					closeGalleryModal={() => setIsModalOpen(false)}
+					currentImage={currentImage}
+					imagesList={imageUrls}
+					setCurrentImage={setCurrentImage}
+					cssMax={cssMax}
+					pointsCount={Math.min(cardCount, pointsCountDefault)}
+					pointColor={modalPointColor}
+					arrowColor={modalArrowColor}
+					arrowHoverColor={modalArrowHoverColor}
+					modalBackgroundColor={modalBackgroundColor}
+					modalOverlayColor={modalOverlayColor}
+					modalOverlayOpacity={modalOverlayOpacity}
+					modalOverlayBlur={modalOverlayBlur}
+					modalOverlayShadow={modalOverlayShadow}
+					modalOverlayTransition={modalOverlayTransition}
+					modalOverlayTransitionDuration={modalOverlayTransitionDuration}
+					modalImageWidth={modalImageWidth}
+					modalImageHeight={modalImageHeight}
+					cardBorderWidth={cardBorderWidth}
+					cardBorderColor={cardBorderColor}
+					delta={delta}
+					pointsGap={pointsGap}
+					pointSize={pointSize}
+					pointsType={pointsType}
+					className={modalClassName}
+					exitClassName={modalExitClassName}
+				/>
 			)}
 		</>
 	);

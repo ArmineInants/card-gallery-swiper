@@ -141,12 +141,3 @@ export const ProgressPoint = styled.div<{ $active: boolean; $pointColor: string;
   margin: 0 ${({ $pointsGap }) => $pointsGap / 2}px;
   transition: background-color 0.2s ease-in, width 0.2s ease-in, height 0.2s ease-in;
 `;
-
-export const ModalContainer = styled.div`
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`;

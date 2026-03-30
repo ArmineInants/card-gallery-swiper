@@ -1,5 +1,4 @@
 import React from 'react';
-import LazyLoad from 'react-lazyload';
 
 import Image from '../Image/Image';
 import { CardStyle, CardImageSlot } from './Card.styles';
@@ -16,7 +15,6 @@ interface CardProps {
 	clickable: boolean;
 }
 
-// TODO: LazyLoad по горизонту не работает. Попробовать поиграться с пропом scrollContainer.
 export const Card: React.FC<CardProps> = ({
 	imageUrl,
 	className = '',
@@ -37,9 +35,7 @@ export const Card: React.FC<CardProps> = ({
 			onClick={() => onClickImage(id)}
 		>
 			<CardImageSlot>
-				<LazyLoad once offset={500}>
-					<Image shimmerColor={borderColor} alt="image" url={imageUrl} loading="eager" withShimmer />
-				</LazyLoad>
+				<Image shimmerColor={borderColor} alt="image" url={imageUrl} loading="lazy" withShimmer />
 			</CardImageSlot>
 		</CardStyle>
 	);

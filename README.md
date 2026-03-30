@@ -45,6 +45,8 @@ Peer dependencies you should already have in your app:
 - `react` / `react-dom`
 - `styled-components`
 
+If you use **Next.js**, make sure your app is configured for **styled-components SSR** (to avoid flash of unstyled content).
+
 ---
 
 ### Basic usage
@@ -153,7 +155,8 @@ All props are optional unless stated otherwise.
 | `modalArrowColor`           | `string` | `'#FFFFFF'`                          | Color for navigation arrows inside the modal gallery. |
 | `modalArrowHoverColor`      | `string` | `'#D4AF37'`                          | Hover color for modal navigation arrows. |
 | `modalPointColor`           | `string` | `'rgba(255, 255, 255, 0.3)'`         | Active progress dot color in the modal gallery. |
-| `modalClassName`            | `string` | `''`                                  | Class name applied to the modal gallery container (the modal content box). |
+| `modalClassName`            | `string` | `''`                                  | Class name applied to the modal overlay (full-screen backdrop). |
+| `modalExitClassName`        | `string` | `''`                                  | Class name applied to the modal close (exit) button. |
 | `modalImageWidths`          | `IBreakpoints` | `{ mobile: 328, tablet: 504, laptop: 504, desktop: 504, large: 504 }` | Modal image width per breakpoint (px). |
 | `modalImageHeights`         | `IBreakpoints` | `{ mobile: 328, tablet: 504, laptop: 504, desktop: 504, large: 504 }` | Modal image height per breakpoint (px). |
 
