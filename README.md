@@ -11,9 +11,7 @@
   &nbsp;
   <img src="https://img.shields.io/badge/React-16.8%2B-61DAFB?style=flat-square&logo=react&logoColor=222" alt="React" />
   &nbsp;
-  <img src="https://img.shields.io/badge/styled--components-5%2B-DB7093?style=flat-square" alt="styled-components peer dependency" />
-  &nbsp;
-  <a href="https://bundlephobia.com/package/card-gallery-swiper"><img src="https://img.shields.io/bundlephobia/minzip/card-gallery-swiper?style=flat-square&label=minzipped" alt="Bundle size (minzip)" /></a>
+
 </p>
 
 <p align="center">

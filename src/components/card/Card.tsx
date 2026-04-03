@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Image from '../Image/Image';
 import { CardStyle, CardImageSlot } from './Card.styles';
@@ -16,7 +16,7 @@ interface CardProps {
 	clickable: boolean;
 }
 
-export const Card: React.FC<CardProps> = ({
+const CardInner: React.FC<CardProps> = ({
 	imageUrl,
 	className = '',
 	id = 1,
@@ -27,6 +27,10 @@ export const Card: React.FC<CardProps> = ({
 	shimmerColor,
 	clickable,
 }) => {
+	const handleClick = useCallback(() => {
+		onClickImage(id);
+	}, [onClickImage, id]);
+
 	return (
 		<CardStyle
 			$cssMax={cssMax}
@@ -34,7 +38,7 @@ export const Card: React.FC<CardProps> = ({
 			$borderWidth={borderWidth}
 			$borderColor={borderColor}
 			$clickable={clickable}
-			onClick={() => onClickImage(id)}
+			onClick={handleClick}
 		>
 			<CardImageSlot>
 				<Image
@@ -49,3 +53,5 @@ export const Card: React.FC<CardProps> = ({
 		</CardStyle>
 	);
 };
+
+export const Card = React.memo(CardInner);

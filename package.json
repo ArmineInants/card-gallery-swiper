@@ -1,7 +1,8 @@
 {
   "name": "card-gallery-swiper",
   "version": "1.1.6",
-  "description": "A React card gallery swiper with constrained layout and modal image viewer.",
+  "description": "React TypeScript horizontal card gallery and image carousel: container-aligned layout, edge-to-edge scroll, optional modal lightbox. styled-components. React 16.8+.",
+  "author": "Armine Inants",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -44,7 +45,10 @@
   },
   "keywords": [
     "react",
+    "typescript",
     "react-component",
+    "ui-component",
+    "styled-components",
     "react-gallery",
     "react-image-gallery",
     "react-carousel",
@@ -53,14 +57,19 @@
     "image-gallery",
     "image-carousel",
     "image-slider",
+    "image-lightbox",
+    "lightbox",
     "photo-gallery",
+    "product-gallery",
     "card-gallery",
     "gallery-swiper",
     "gallery-carousel",
     "modal-gallery",
     "react-modal-gallery",
     "horizontal-scroll",
-    "react-horizontal-scroll"
+    "react-horizontal-scroll",
+    "responsive-gallery",
+    "touch"
   ],
   "repository": {
     "type": "git",
@@ -69,6 +78,6 @@
   "bugs": {
     "url": "https://github.com/ArmineInants/card-gallery-swiper/issues"
   },
-  "homepage": "https://github.com/ArmineInants/card-gallery-swiper#readme",
+  "homepage": "https://card-gallery-swiper.vercel.app/",
   "license": "MIT"
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { ConstrainedBox } from './components/constraints/ConstrainedBox';
 import { Card } from './components/card/Card';
 import { ModalGallery } from './components/modalGallery/ModalGallery';
@@ -197,11 +197,21 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const totalSlides = Math.ceil(cardCount / slidesPerView) || 1;
 	const pointsCount = Math.min(totalSlides, pointsCountDefault);
 
-	const onClickImage = (id: number) => {
-		if (!withModal) return;
-		setCurrentImage(id);
-		setIsModalOpen(true);
-	}
+	const handleCardImageClick = useCallback(
+		(id: number) => {
+			if (!withModal) return;
+			setCurrentImage(id);
+			setIsModalOpen(true);
+		},
+		[withModal]
+	);
+
+	const closeModal = useCallback(() => setIsModalOpen(false), []);
+
+	const progressBarWidthStyle = useMemo(
+		() => ({ width: `${delta * totalSlides + 6}px` }),
+		[delta, totalSlides]
+	);
 
 	const onSlide = (side: 'left' | 'right') => {
 		if (!(sliderElement?.current && sliderContentWrapper?.current)) return;
@@ -299,12 +309,15 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		}
 	}, []);
 
-	const cssMax = {
-		MOBILE_MAX: breakpoints.tablet - 1,
-		TABLET_MAX: breakpoints.laptop - 1,
-		LAPTOP_MAX: breakpoints.desktop - 1,
-		DESKTOP_MAX: breakpoints.large - 1,
-	}
+	const cssMax = useMemo(
+		() => ({
+			MOBILE_MAX: breakpoints.tablet - 1,
+			TABLET_MAX: breakpoints.laptop - 1,
+			LAPTOP_MAX: breakpoints.desktop - 1,
+			DESKTOP_MAX: breakpoints.large - 1,
+		}),
+		[breakpoints]
+	);
 
 	return (
 		<>
@@ -318,7 +331,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 										imageUrl={imageUrls[i]}
 										id={i}
 										key={i}
-										onClickImage={() => onClickImage(i)}
+										onClickImage={handleCardImageClick}
 										cssMax={cssMax}
 										className={cardClassName}
 										borderWidth={cardBorderWidth}
@@ -338,10 +351,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 								<ArrowRightIcon color={arrowColor} />
 							</NavigationButton>
 							<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
-								<ProgressBar
-									style={{ width: `${delta * totalSlides + 6}px` }}
-									ref={sliderNavElement}
-								>
+								<ProgressBar style={progressBarWidthStyle} ref={sliderNavElement}>
 									{Array.from({ length: totalSlides }, (_, idx) => idx + 1).map((i) => (
 										<ProgressPoint
 											key={i}
@@ -370,7 +380,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 			{withModal && (
 				<ModalGallery
 					isOpenedGalleryModal={isModalOpen}
-					closeGalleryModal={() => setIsModalOpen(false)}
+					closeGalleryModal={closeModal}
 					currentImage={currentImage}
 					imagesList={imageUrls}
 					setCurrentImage={setCurrentImage}
