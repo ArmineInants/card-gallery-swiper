@@ -8,6 +8,8 @@ export const ModalOverlay = styled.div<{
 	$overlayColor: string;
 	$overlayOpacity: number;
 	$overlayBlur: number;
+	$contentOpen: boolean;
+	$durationMs: number;
 }>`
 	background-color: ${({ $overlayColor }) => $overlayColor};
 	display: flex;
@@ -21,8 +23,17 @@ export const ModalOverlay = styled.div<{
 	justify-content: center;
 	align-items: center;
 	z-index: 100000;
-	opacity: ${({ $overlayOpacity }) => $overlayOpacity};
+	isolation: isolate;
+	transform: translateZ(0);
+	opacity: ${({ $contentOpen, $overlayOpacity }) =>
+		$contentOpen ? $overlayOpacity : 0};
+	/* Static blur: animating backdrop-filter is expensive (full-layer repaints each frame). */
 	backdrop-filter: ${({ $overlayBlur }) => `blur(${$overlayBlur}px)`};
+	transition: opacity ${({ $durationMs }) => $durationMs}ms cubic-bezier(0.16, 1, 0.3, 1);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition-duration: 0.01ms;
+	}
 `;
 
 export const ModalBox = styled.div<{
@@ -32,6 +43,8 @@ export const ModalBox = styled.div<{
 	$transition?: string;
 	$transitionDuration?: number;
 	$maxWidth?: string;
+	$contentOpen: boolean;
+	$durationMs: number;
 }>`
 	position: relative;
 	display: flex;
@@ -40,13 +53,28 @@ export const ModalBox = styled.div<{
 	justify-content: center;
 	background: ${({ $backgroundColor }) => $backgroundColor};
 	padding: 0;
-	transform: translateY(0);
+	transform: ${({ $contentOpen }) =>
+		$contentOpen
+			? 'translate3d(0, 0, 0) scale(1)'
+			: 'translate3d(0, 16px, 0) scale(0.97)'};
+	opacity: ${({ $contentOpen }) => ($contentOpen ? 1 : 0)};
 	width: auto;
 	height: auto;
 	max-width: ${({ $maxWidth }) => $maxWidth ?? 'unset'};
 	box-shadow: ${({ $shadow }) => $shadow ?? 'none'};
-	transition: ${({ $transition, $transitionDuration }) =>
-		$transition ? `${$transition} ${$transitionDuration ?? 0.2}s` : 'none'};
+	transition: ${({ $durationMs, $transition, $transitionDuration }) => {
+		const enter = `opacity ${$durationMs}ms cubic-bezier(0.16, 1, 0.3, 1), transform ${$durationMs}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+		if (!$transition) return enter;
+		const sec =
+			$transitionDuration != null && $transitionDuration > 2
+				? $transitionDuration / 1000
+				: ($transitionDuration ?? 0.3);
+		return `${enter}, ${$transition} ${sec}s`;
+	}};
+
+	@media (prefers-reduced-motion: reduce) {
+		transition-duration: 0.01ms;
+	}
 
 	@media (max-width: ${({ $cssMax }) => $cssMax.TABLET_MAX}px) {
 		max-height: unset !important;

@@ -45,6 +45,7 @@ export interface CardGallerySwiperProps {
 	arrowColor?: string;
 	arrowHoverColor?: string;
 	pointColor?: string;
+	navigationButtonSize?: number;
 	cardWidths?: IBreakpoints;
 	cardHeights?: IBreakpoints;
 	cardClassName?: string;
@@ -114,6 +115,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	arrowColor = '#2D2926',
 	pointColor = '#D1CDC7',
 	arrowHoverColor = '#8C7355',
+	navigationButtonSize = 42,
 	modalBackgroundColor = 'transparent',
 	modalOverlayColor = 'rgba(45, 41, 38, 0.85)',
 	modalArrowColor = '#FFFFFF',
@@ -151,6 +153,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	const [viewportWidth, setViewportWidth] = useState(
 		typeof window !== 'undefined' ? window.innerWidth : breakpoints.desktop
 	);
+	const [computedContainerWidth, setCurrentContainerWidth] = useState(containerMaxWidths.mobile);
 	const sliderElement = useRef<HTMLDivElement>(null);
 	const sliderContentWrapper = useRef<HTMLDivElement>(null);
 	const sliderNavElement = useRef<HTMLDivElement>(null);
@@ -160,7 +163,13 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
-		const handleResize = () => setViewportWidth(window.innerWidth);
+		const handleResize = () => {
+			setViewportWidth(window.innerWidth);
+			if (sliderElement.current?.clientWidth) {
+				setCurrentContainerWidth(sliderElement.current?.clientWidth);
+			}
+		}
+		handleResize();
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
@@ -179,8 +188,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 
 	const spaceBetweenValue = spaceBetween[device as keyof typeof spaceBetween] || spaceBetween.mobile;
 	const containerMaxWidth = containerMaxWidths[device as keyof typeof containerMaxWidths] || Math.min(viewportWidth - spaceBetweenValue * 2, containerMaxWidths.mobile);
-	const cardWidth = cardWidths[device as keyof typeof cardWidths] || Math.min(cardWidths.mobile, containerMaxWidth);
-	const cardHeight = cardHeights[device as keyof typeof cardHeights] || Math.min(cardHeights.mobile, containerMaxWidth);
+	const cardWidth = cardWidths[device as keyof typeof cardWidths] || Math.min(computedContainerWidth, cardWidths.mobile);
+	const cardHeight = cardHeights[device as keyof typeof cardHeights] || Math.min(computedContainerWidth, cardHeights.mobile);
 	const modalImageWidth = modalImageWidths[device as keyof typeof modalImageWidths] || Math.min(modalImageWidths.mobile, containerMaxWidth);
 	const modalImageHeight = modalImageHeights[device as keyof typeof modalImageHeights] || Math.min(modalImageHeights.mobile, containerMaxWidth);
 	const cardCount = Object.keys(imageUrls).length;
@@ -324,8 +333,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				</List>
 				{pointsCount > 1 && (
 					<ConstrainedBox containerMaxWidth={containerMaxWidth}>
-						<NavigationWrapper>
-							<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} onClick={() => currentActivePoint > 1 && onSlide('left')}>
+						<NavigationWrapper $size={navigationButtonSize}>
+							<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} $size={navigationButtonSize} onClick={() => currentActivePoint > 1 && onSlide('left')}>
 								<ArrowRightIcon color={arrowColor} />
 							</NavigationButton>
 							<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>
@@ -349,6 +358,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 								aria-label="Next slides"
 								$active={currentActivePoint < totalSlides}
 								$hoverColor={arrowHoverColor}
+								$size={navigationButtonSize}
 								onClick={() => currentActivePoint < totalSlides && onSlide('right')}
 							>
 								<ArrowRightIcon color={arrowColor} />
@@ -380,12 +390,14 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					modalImageHeight={modalImageHeight}
 					cardBorderWidth={cardBorderWidth}
 					cardBorderColor={cardBorderColor}
+					shimmerColor={cardShimmerColor}
 					delta={delta}
 					pointsGap={pointsGap}
 					pointSize={pointSize}
 					pointsType={pointsType}
 					className={modalClassName}
 					exitClassName={modalExitClassName}
+					navigationButtonSize={navigationButtonSize}
 				/>
 			)}
 		</>

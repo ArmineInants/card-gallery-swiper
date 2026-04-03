@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ConstrainedBox } from './components/constraints/ConstrainedBox';
-import { ICssMax, IBreakpoints } from './SwiperSemiConstrained';
+import { ICssMax } from './SwiperSemiConstrained';
 
 export const Section = styled.section`
   position: relative;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
   * {
     user-select: none;
@@ -81,17 +82,17 @@ export const SliderConstraintInner = styled.div<{ $cssMax: ICssMax, $containerMa
   }
 `;
 
-export const NavigationWrapper = styled.div`
+export const NavigationWrapper = styled.div<{ $size: number }>`
   display: flex;
   justify-content: center;
-  height: 50px;
+  height: ${({ $size }) => $size}px;
 `;
 
-export const NavigationButton = styled.button<{ $active?: boolean; $left?: boolean; $hoverColor: string }>`
+export const NavigationButton = styled.button<{ $active?: boolean; $left?: boolean; $hoverColor: string; $size: number }>`
   display: flex;
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: ${({ $size }) => $size}px;
+  height: ${({ $size }) => $size}px;
   align-items: center;
   justify-content: center;
   opacity: ${({ $active }) => ($active ? 1 : 0.3)};

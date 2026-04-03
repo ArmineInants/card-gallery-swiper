@@ -3,21 +3,19 @@ import React, { useState } from 'react';
 import { StyledPicture, StyledImg, ShimmerImg } from './Image.styles';
 
 interface IImageProps {
+	id: string;
 	url: string;
 	classNamePicture?: string;
 	className?: string;
 	alt: string;
 	loading?: "lazy" | "eager" | undefined;
-	style?: any;
 	withShimmer?: boolean;
-	id?: string;
 	shimmerColor?: string;
 }
 
 const Image: React.FC<IImageProps> = ({
 	classNamePicture,
 	className,
-	style,
 	alt,
 	loading = 'eager',
 	withShimmer,
@@ -40,10 +38,10 @@ const Image: React.FC<IImageProps> = ({
 			{withShimmer && !isImageLoaded && (
 				<StyledPicture className={classNamePicture}>
 					<ShimmerImg
+						id={`${id}-shimmer`}
 						alt={alt}
 						src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 						className={className}
-						style={style}
 						$shimmerColor={shimmerColor}
 					/>
 				</StyledPicture>
@@ -58,7 +56,6 @@ const Image: React.FC<IImageProps> = ({
 					alt={alt}
 					className={className}
 					loading={loading}
-					style={style}
 					id={id}
 				/>
 			</StyledPicture>

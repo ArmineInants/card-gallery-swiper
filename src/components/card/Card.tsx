@@ -38,6 +38,7 @@ export const Card: React.FC<CardProps> = ({
 		>
 			<CardImageSlot>
 				<Image
+					id={`card-${id}`}
 					shimmerColor={shimmerColor ?? borderColor}
 					alt="image"
 					url={imageUrl}

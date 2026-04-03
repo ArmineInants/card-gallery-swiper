@@ -46,11 +46,25 @@ export const App: React.FC = () => {
 						imageUrls={imageUrls}
 						fullScreenMode={false}
 						containerMaxWidths={{
-							mobile: 360 - 24,
+							mobile: 240,
 							tablet: 688 - 48,
 							laptop: 1040 - 48,
 							desktop: 1128 - 48,
 							large: 1440 - 48,
+						}}
+						cardWidths={{
+							mobile: 240,
+							tablet: 300,
+							laptop: 300,
+							desktop: 400,
+							large: 400,
+						}}
+						cardHeights={{
+							mobile: 240,
+							tablet: 300,
+							laptop: 300,
+							desktop: 400,
+							large: 400,
 						}}
 						pointsType='square'
 					/>

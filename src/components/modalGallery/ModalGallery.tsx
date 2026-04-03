@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { ICssMax } from '../../SwiperSemiConstrained';
@@ -74,6 +74,7 @@ interface IModalGallery {
 	pointColor: string;
 	arrowColor: string;
 	arrowHoverColor: string;
+	navigationButtonSize: number;
 	modalBackgroundColor: string;
 	modalOverlayColor: string;
 	modalOverlayOpacity: number;
@@ -85,6 +86,7 @@ interface IModalGallery {
 	modalImageHeight: number;
 	cardBorderWidth: number;
 	cardBorderColor: string;
+	shimmerColor?: string;
 	delta: number;
 	pointsGap: number;
 	pointSize: number;
@@ -104,6 +106,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	pointColor,
 	arrowColor,
 	arrowHoverColor,
+	navigationButtonSize,
 	modalBackgroundColor,
 	modalOverlayColor,
 	modalOverlayOpacity,
@@ -115,6 +118,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	modalImageHeight,
 	cardBorderWidth,
 	cardBorderColor,
+	shimmerColor,
 	delta,
 	pointsGap,
 	pointSize,
@@ -128,10 +132,21 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	const lastFocusedElementRef = useRef<HTMLElement | null>(null);
 	const barRef = useRef<HTMLDivElement | null>(null);
 	const modalWidth = 936;
+	const isClosingRef = useRef(false);
+	const closeFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const [contentOpen, setContentOpen] = useState(false);
+	const contentOpenRef = useRef(false);
+	contentOpenRef.current = contentOpen;
 
 	const totalImages = Object.keys(imagesList).length;
 
-	const onClose = useCallback(() => {
+	const finishClose = useCallback(() => {
+		if (!isClosingRef.current) return;
+		isClosingRef.current = false;
+		if (closeFallbackTimerRef.current) {
+			clearTimeout(closeFallbackTimerRef.current);
+			closeFallbackTimerRef.current = null;
+		}
 		const bar = barRef.current;
 		if (bar) {
 			const translate: number =
@@ -140,6 +155,49 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 		}
 		closeGalleryModal();
 	}, [closeGalleryModal]);
+
+	const startCloseAnimation = useCallback(() => {
+		if (isClosingRef.current) return;
+		if (!contentOpenRef.current) return;
+		isClosingRef.current = true;
+		setContentOpen(false);
+		const ms = modalOverlayTransitionDuration + 100;
+		closeFallbackTimerRef.current = setTimeout(() => {
+			closeFallbackTimerRef.current = null;
+			finishClose();
+		}, ms);
+	}, [modalOverlayTransitionDuration, finishClose]);
+
+	const handleOverlayTransitionEnd = useCallback(
+		(e: React.TransitionEvent<HTMLDivElement>) => {
+			if (e.target !== e.currentTarget) return;
+			if (e.propertyName !== 'opacity') return;
+			if (!isClosingRef.current) return;
+			if (closeFallbackTimerRef.current) {
+				clearTimeout(closeFallbackTimerRef.current);
+				closeFallbackTimerRef.current = null;
+			}
+			finishClose();
+		},
+		[finishClose]
+	);
+
+	useLayoutEffect(() => {
+		if (!isOpenedGalleryModal) return;
+		isClosingRef.current = false;
+		setContentOpen(false);
+		// One frame is enough after layout: browser commits opacity 0, then we animate open.
+		const id = requestAnimationFrame(() => setContentOpen(true));
+		return () => cancelAnimationFrame(id);
+	}, [isOpenedGalleryModal]);
+
+	useEffect(() => {
+		return () => {
+			if (closeFallbackTimerRef.current) {
+				clearTimeout(closeFallbackTimerRef.current);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		if (isOpenedGalleryModal) {
@@ -197,20 +255,29 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 
 	useEffect(() => {
 		if (typeof document === 'undefined') return;
-		if (!isOpenedGalleryModal) return;
+		if (!isOpenedGalleryModal || !contentOpen) return;
 
 		lastFocusedElementRef.current = document.activeElement as HTMLElement | null;
-		// Let the DOM paint before focusing.
-		queueMicrotask(() => closeBtnRef.current?.focus());
+		const focusTimer = window.setTimeout(() => {
+			closeBtnRef.current?.focus();
+		}, modalOverlayTransitionDuration);
+
+		return () => {
+			clearTimeout(focusTimer);
+		};
+	}, [isOpenedGalleryModal, contentOpen, modalOverlayTransitionDuration]);
+
+	useEffect(() => {
+		if (typeof document === 'undefined') return;
+		if (!isOpenedGalleryModal) return;
 
 		const onKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
 				e.preventDefault();
-				onClose();
+				startCloseAnimation();
 				return;
 			}
 
-			// Basic focus trap
 			if (e.key === 'Tab') {
 				const root = modalBoxRef.current;
 				if (!root) return;
@@ -245,7 +312,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			lastFocusedElementRef.current?.focus?.();
 			lastFocusedElementRef.current = null;
 		};
-	}, [isOpenedGalleryModal, onClose]);
+	}, [isOpenedGalleryModal, startCloseAnimation]);
 
 	if (!isOpenedGalleryModal) return null;
 
@@ -257,7 +324,10 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 			$overlayColor={modalOverlayColor}
 			$overlayOpacity={modalOverlayOpacity}
 			$overlayBlur={modalOverlayBlur}
-			onMouseDown={onClose}
+			$contentOpen={contentOpen}
+			$durationMs={modalOverlayTransitionDuration}
+			onMouseDown={startCloseAnimation}
+			onTransitionEnd={handleOverlayTransitionEnd}
 			role="presentation"
 		>
 			<ModalBox
@@ -268,6 +338,8 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 				$shadow={modalOverlayShadow}
 				$transition={modalOverlayTransition}
 				$transitionDuration={modalOverlayTransitionDuration}
+				$contentOpen={contentOpen}
+				$durationMs={modalOverlayTransitionDuration}
 				onMouseDown={(e) => e.stopPropagation()}
 				role="dialog"
 				aria-modal="true"
@@ -277,7 +349,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 					ref={closeBtnRef}
 					type="button"
 					aria-label="Close modal"
-					onClick={onClose}
+					onClick={startCloseAnimation}
 					className={exitClassName}
 					$cssMax={cssMax}
 					$arrowColor={arrowColor}
@@ -297,7 +369,8 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 						$modalImageHeight={modalImageHeight}
 					>
 						<Image
-							shimmerColor={cardBorderColor}
+							id={`modal-${currentImage}`}
+							shimmerColor={shimmerColor ?? cardBorderColor}
 							url={(imagesList as any)[currentImage] as string}
 							alt="image"
 							loading="eager"
@@ -305,12 +378,13 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 						/>
 					</ImageWrapper>
 					{pointsCount > 1 && (
-						<NavigationWrapper>
+						<NavigationWrapper $size={navigationButtonSize}>
 							<NavigationButton
 								aria-label="Previous slides"
 								$active={currentImage > 1}
 								$left={true}
 								$hoverColor={arrowHoverColor}
+								$size={navigationButtonSize}
 								onClick={() => slide('left')}
 							>
 								<ArrowRightIcon color={arrowColor} />
@@ -337,6 +411,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 								aria-label="Next slides"
 								$active={currentImage < totalImages}
 								$hoverColor={arrowHoverColor}
+								$size={navigationButtonSize}
 								onClick={() => slide('right')}
 							>
 								<ArrowRightIcon color={arrowColor} />

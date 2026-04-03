@@ -1,14 +1,40 @@
-## Card Gallery Swiper
+# Card Gallery Swiper
 
-A React **card gallery swiper** with container-aligned layout, edge-to-edge scrolling and an optional **modal image gallery**.
+<p align="center">
+  <a href="https://www.npmjs.com/package/card-gallery-swiper"><img src="https://img.shields.io/npm/v/card-gallery-swiper?style=flat-square&logo=npm&label=version" alt="npm version" /></a>
+  &nbsp;
+  <a href="https://www.npmjs.com/package/card-gallery-swiper"><img src="https://img.shields.io/npm/dw/card-gallery-swiper?style=flat-square&label=npm%20downloads" alt="npm downloads" /></a>
+  &nbsp;
+  <a href="https://github.com/ArmineInants/card-gallery-swiper/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/card-gallery-swiper?style=flat-square&label=license" alt="License" /></a>
+  &nbsp;
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/React-16.8%2B-61DAFB?style=flat-square&logo=react&logoColor=222" alt="React" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/styled--components-5%2B-DB7093?style=flat-square" alt="styled-components peer dependency" />
+  &nbsp;
+  <a href="https://bundlephobia.com/package/card-gallery-swiper"><img src="https://img.shields.io/bundlephobia/minzip/card-gallery-swiper?style=flat-square&label=minzipped" alt="Bundle size (minzip)" /></a>
+</p>
 
-Built with **TypeScript** and **styled-components**, designed to be dropped into any React app.
+<p align="center">
+  <strong>Horizontal card gallery</strong> with container alignment, edge-to-edge scroll, and an optional <strong>modal image viewer</strong>.
+</p>
+
+<p align="center">
+  <a href="https://card-gallery-swiper.vercel.app/">Live demo</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.npmjs.com/package/card-gallery-swiper">npm</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/ArmineInants/card-gallery-swiper">GitHub</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/ArmineInants/card-gallery-swiper/issues">Issues</a>
+</p>
 
 ---
 
-### Demo
+A React **card gallery swiper** with container-aligned layout, edge-to-edge scrolling and an optional **modal image gallery**. Built with **TypeScript** and **styled-components**, designed to be dropped into any React app.
 
-**Live demo:** [View demo](https://card-gallery-swiper.vercel.app/)
+### Demo
 
 <p align="center">
   <img src="./docs/Card-Gallery-Screenshot-1.jpg" alt="Card Gallery Swiper screenshot 1" width="40%" style="margin-right: 10px;" />
@@ -155,6 +181,7 @@ All props are optional unless stated otherwise.
 | `cardShimmerColor` | `string`              | –            | Shimmer placeholder color while the card image loads. Defaults to `cardBorderColor`. |
 | `arrowColor`    | `string`                  | `#2D2926`    | Color for navigation arrows in the swiper. |
 | `arrowHoverColor` | `string`               | `#8C7355`    | Arrow color on hover in the swiper. |
+| `navigationButtonSize` | `number`           | `42`         | Width and height (px) of the prev/next navigation hit areas in the main swiper and in the modal gallery. |
 | `pointColor`    | `string`                  | `#D1CDC7`    | Active progress dot color in the swiper. |
 | `pointsType`    | `'circle' \| 'square'`    | `'circle'`   | Shape of progress dots. |
 | `pointSize`     | `number`                  | `10`         | Progress dot size (width/height, px). |
