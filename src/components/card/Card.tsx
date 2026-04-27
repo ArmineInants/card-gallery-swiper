@@ -54,4 +54,6 @@ const CardInner: React.FC<CardProps> = ({
 	);
 };
 
+CardInner.displayName = 'Card';
+
 export const Card = React.memo(CardInner);

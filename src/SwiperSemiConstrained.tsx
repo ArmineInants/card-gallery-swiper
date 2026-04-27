@@ -1,4 +1,5 @@
-import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import { getTranslateXPx } from './utils/getTranslateXPx';
 import { ConstrainedBox } from './components/constraints/ConstrainedBox';
 import { Card } from './components/card/Card';
 import { ModalGallery } from './components/modalGallery/ModalGallery';
@@ -213,30 +214,36 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		[delta, totalSlides]
 	);
 
-	const onSlide = (side: 'left' | 'right') => {
-		if (!(sliderElement?.current && sliderContentWrapper?.current)) return;
-		const wrapperWidth = sliderContentWrapper.current.getBoundingClientRect().width;
-		const scrollWidth = (wrapperWidth + spaceBetweenValue) * slidesPerView;
-		const newScroll = side === 'right' ? (currentActivePoint - 1) * scrollWidth + scrollWidth : (currentActivePoint - 1) * scrollWidth - scrollWidth;
+	const onSlide = useCallback(
+		(side: 'left' | 'right') => {
+			if (!(sliderElement?.current && sliderContentWrapper?.current)) return;
+			const wrapperWidth = sliderContentWrapper.current.getBoundingClientRect().width;
+			const scrollWidth = (wrapperWidth + spaceBetweenValue) * slidesPerView;
+			const newScroll =
+				side === 'right'
+					? (currentActivePoint - 1) * scrollWidth + scrollWidth
+					: (currentActivePoint - 1) * scrollWidth - scrollWidth;
 
-		sliderElement.current.scrollTo({
-			top: 0,
-			left: newScroll,
-			behavior: 'smooth',
-		});
-	};
+			sliderElement.current.scrollTo({
+				top: 0,
+				left: newScroll,
+				behavior: 'smooth',
+			});
+		},
+		[currentActivePoint, spaceBetweenValue, slidesPerView]
+	);
 
-	const bar = sliderNavElement.current;
-	if (currentActivePoint > pointsCount - 1 && bar) {
-		const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
-		if (!translate) {
-			if (currentActivePoint < totalSlides) {
-				bar.style.transform = `translateX(${-delta * (currentActivePoint - (pointsCount - 1))}px)`;
-			} else {
-				bar.style.transform = `translateX(${-delta * (currentActivePoint - pointsCount)}px)`;
-			}
+	useLayoutEffect(() => {
+		const bar = sliderNavElement.current;
+		if (!bar || !(currentActivePoint > pointsCount - 1)) return;
+		const translate = getTranslateXPx(bar.style.transform);
+		if (translate) return;
+		if (currentActivePoint < totalSlides) {
+			bar.style.transform = `translateX(${-delta * (currentActivePoint - (pointsCount - 1))}px)`;
+		} else {
+			bar.style.transform = `translateX(${-delta * (currentActivePoint - pointsCount)}px)`;
 		}
-	}
+	}, [currentActivePoint, pointsCount, totalSlides, delta]);
 
 	const runScrollUpdate = useCallback(() => {
 		if (!sliderElement?.current || !sliderContentWrapper.current) return;
@@ -266,14 +273,14 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 			return;
 		}
 		if (currentActivePoint > activePoint && activePoint > 1 && bar && activePoint < totalSlides - 1) {
-			const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+			const translate = getTranslateXPx(bar.style.transform);
 			const direction = currentActivePoint - activePoint;
 			if ((activePoint * delta + translate) / delta <= 1) {
 				bar.style.transform = `translateX(${delta * (direction) + translate}px)`;
 			}
 		}
 		if (currentActivePoint <= activePoint && activePoint < totalSlides && bar && activePoint > pointsCount - 2) {
-			const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+			const translate = getTranslateXPx(bar.style.transform);
 			const direction = activePoint - currentActivePoint;
 			if ((activePoint * delta + translate) / delta > pointsCount - 1) {
 				bar.style.transform = `translateX(${-delta * (direction) + translate}px)`;
@@ -296,6 +303,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		totalSlides,
 		pointsCount,
 		currentActivePoint,
+		delta,
 	]);
 
 	const onScroll = useCallback(() => {
@@ -347,7 +355,14 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 				{pointsCount > 1 && (
 					<ConstrainedBox containerMaxWidth={containerMaxWidth}>
 						<NavigationWrapper $size={navigationButtonSize}>
-							<NavigationButton aria-label="Previous slides" $active={currentActivePoint > 1} $left={true} $hoverColor={arrowHoverColor} $size={navigationButtonSize} onClick={() => currentActivePoint > 1 && onSlide('left')}>
+							<NavigationButton
+								aria-label="Previous slides"
+								$active={currentActivePoint > 1}
+								$left={true}
+								$hoverColor={arrowHoverColor}
+								$size={navigationButtonSize}
+								onClick={() => currentActivePoint > 1 && onSlide('left')}
+							>
 								<ArrowRightIcon color={arrowColor} />
 							</NavigationButton>
 							<ProgressBarVisible $pointsCount={pointsCount} $delta={delta}>

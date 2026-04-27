@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { ICssMax } from '../../SwiperSemiConstrained';
+import { getTranslateXPx } from '../../utils/getTranslateXPx';
 import {
 	ModalOverlay,
 	ModalBox,
@@ -140,6 +141,13 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 
 	const totalImages = Object.keys(imagesList).length;
 
+	const progressBarWidthStyle = useMemo(
+		() => ({ width: `${delta * totalImages + 6}px` }),
+		[delta, totalImages]
+	);
+
+	const currentImageUrl = imagesList[currentImage] ?? '';
+
 	const finishClose = useCallback(() => {
 		if (!isClosingRef.current) return;
 		isClosingRef.current = false;
@@ -149,8 +157,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 		}
 		const bar = barRef.current;
 		if (bar) {
-			const translate: number =
-				Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+			const translate = getTranslateXPx(bar.style.transform);
 			bar.style.transform = `translateX(${-translate}px)`;
 		}
 		closeGalleryModal();
@@ -217,7 +224,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 		const bar = barRef.current;
 		if (!bar) return;
 
-		const translate: number = Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+		const translate = getTranslateXPx(bar.style.transform);
 		if (!translate) {
 			if (currentImage < totalImages) {
 				bar.style.transform = `translateX(${-delta * (currentImage - (pointsCount - 1))}px)`;
@@ -225,7 +232,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 				bar.style.transform = `translateX(${-delta * (currentImage - pointsCount)}px)`;
 			}
 		}
-	}, [isOpenedGalleryModal, currentImage, pointsCount, totalImages]);
+	}, [isOpenedGalleryModal, currentImage, pointsCount, totalImages, delta]);
 
 	const slide = (side: 'left' | 'right') => {
 		const bar = barRef.current;
@@ -235,16 +242,14 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 
 		if (side === 'left' && currentImage !== 1) {
 			if (bar && currentImage < totalImages - (pointsCount - 3) && currentImage > 2) {
-				const translate: number =
-					Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+				const translate = getTranslateXPx(bar.style.transform);
 				if ((currentImage * delta + translate) / delta <= 2) {
 					bar.style.transform = `translateX(${delta + translate}px)`;
 				}
 			}
 		} else if (side === 'right' && currentImage !== totalImages) {
 			if (bar && currentImage > pointsCount - 2 && currentImage < totalImages - 1) {
-				const translate: number =
-					Number(bar.style.transform.substring(11).slice(0, -3)) || 0;
+				const translate = getTranslateXPx(bar.style.transform);
 				if ((currentImage * delta + translate) / delta > pointsCount - 2) {
 					bar.style.transform = `translateX(${-delta + translate}px)`;
 				}
@@ -371,7 +376,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 						<Image
 							id={`modal-${currentImage}`}
 							shimmerColor={shimmerColor ?? cardBorderColor}
-							url={(imagesList as any)[currentImage] as string}
+							url={currentImageUrl}
 							alt="image"
 							loading="eager"
 							withShimmer
@@ -391,7 +396,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 							</NavigationButton>
 							<ProgressBarVisible $pointsCount={pointsCount} $delta={delta} id="scrollable-wrap" >
 								<ProgressBar
-									style={{ width: `${delta * totalImages + 6}px` }}
+									style={progressBarWidthStyle}
 									id="scrollable-bar"
 									ref={barRef}
 								>
