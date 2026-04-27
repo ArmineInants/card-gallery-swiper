@@ -1,6 +1,6 @@
 {
   "name": "card-gallery-swiper",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "React TypeScript horizontal card gallery and image carousel: container-aligned layout, edge-to-edge scroll, optional modal lightbox. styled-components. React 16.8+.",
   "author": "Armine Inants",
   "main": "dist/index.js",
