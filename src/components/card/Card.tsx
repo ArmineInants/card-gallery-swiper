@@ -14,6 +14,7 @@ interface CardProps {
 	borderColor?: string;
 	shimmerColor?: string;
 	clickable: boolean;
+	alt: string;
 }
 
 const CardInner: React.FC<CardProps> = ({
@@ -26,6 +27,7 @@ const CardInner: React.FC<CardProps> = ({
 	borderColor,
 	shimmerColor,
 	clickable,
+	alt,
 }) => {
 	const handleClick = useCallback(() => {
 		onClickImage(id);
@@ -44,7 +46,7 @@ const CardInner: React.FC<CardProps> = ({
 				<Image
 					id={`card-${id}`}
 					shimmerColor={shimmerColor ?? borderColor}
-					alt="image"
+					alt={alt}
 					url={imageUrl}
 					loading="lazy"
 					withShimmer

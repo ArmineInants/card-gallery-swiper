@@ -94,6 +94,7 @@ interface IModalGallery {
 	pointsType: 'circle' | 'square';
 	className: string;
 	exitClassName: string;
+	getImageAlt: (id: number) => string;
 }
 
 export const ModalGallery: React.FC<IModalGallery> = ({
@@ -126,6 +127,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 	pointsType,
 	className,
 	exitClassName,
+	getImageAlt,
 }) => {
 	const imageRef = useRef<HTMLDivElement>(null);
 	const modalBoxRef = useRef<HTMLDivElement | null>(null);
@@ -377,7 +379,7 @@ export const ModalGallery: React.FC<IModalGallery> = ({
 							id={`modal-${currentImage}`}
 							shimmerColor={shimmerColor ?? cardBorderColor}
 							url={currentImageUrl}
-							alt="image"
+							alt={getImageAlt(currentImage)}
 							loading="eager"
 							withShimmer
 						/>

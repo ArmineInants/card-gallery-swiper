@@ -154,6 +154,8 @@ All props are optional unless stated otherwise.
 | Prop          | Type                         | Default | Description |
 |--------------|------------------------------|---------|-------------|
 | `imageUrls`* | `Record<number, string>`     | –       | Map from index (starting at 1) to image URL. **Required.** |
+| `imageAlts`  | `Record<number, string>`     | –       | Per-image alt text keyed like `imageUrls`. Defaults to `Gallery image {n}`. |
+| `ariaLabel`  | `string`                     | `'Image gallery'` | Accessible name for the gallery region. |
 | `withModal`  | `boolean`                    | `true`  | Whether clicking a card opens the modal gallery. |
 | `fullScreenMode` | `boolean`                | `true` | When `true`, the gallery uses the full viewport width instead of being constrained by `containerMaxWidths`. |
 

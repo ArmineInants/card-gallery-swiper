@@ -33,6 +33,10 @@ export interface IBreakpoints {
 }
 export interface CardGallerySwiperProps {
 	imageUrls: Record<number, string>;
+	/** Per-image alt text keyed by the same index as `imageUrls`. */
+	imageAlts?: Record<number, string>;
+	/** Accessible name for the gallery region. */
+	ariaLabel?: string;
 	withModal?: boolean;
 	pointsCountDefault?: 3 | 4 | 5 | 6;
 	pointsType?: 'circle' | 'square';
@@ -83,6 +87,8 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 	pointSize = 10,
 	pointsGap = 10,
 	imageUrls,
+	imageAlts,
+	ariaLabel = 'Image gallery',
 	className,
 	fullScreenMode = true,
 	breakpoints = {
@@ -327,9 +333,14 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 		[breakpoints]
 	);
 
+	const getImageAlt = useCallback(
+		(id: number) => imageAlts?.[id] ?? `Gallery image ${id}`,
+		[imageAlts]
+	);
+
 	return (
 		<>
-			<Section className={className}>
+			<Section className={className} aria-label={ariaLabel} aria-roledescription="carousel">
 				<List $cssMax={cssMax}>
 					<SliderList ref={sliderElement} onScroll={onScroll} $cssMax={cssMax}>
 						<SliderConstraintWrapper containerMaxWidth={containerMaxWidth}>
@@ -346,6 +357,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 										borderColor={cardBorderColor}
 										shimmerColor={cardShimmerColor}
 										clickable={withModal}
+										alt={getImageAlt(i)}
 									/>
 								))}
 							</SliderConstraintInner>
@@ -423,6 +435,7 @@ export const CardGallerySwiper: React.FC<CardGallerySwiperProps> = ({
 					className={modalClassName}
 					exitClassName={modalExitClassName}
 					navigationButtonSize={navigationButtonSize}
+					getImageAlt={getImageAlt}
 				/>
 			)}
 		</>
